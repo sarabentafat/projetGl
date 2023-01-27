@@ -2,10 +2,10 @@ from flask import Blueprint,request,jsonify
 from modals import db, Personnes,user_schema,users_schema
 
 
-admin = Blueprint('admin',__name__,url_prefix='/api/admin')
+admin = Blueprint('admin',__name__,url_prefix='/admin')
 
 #add a user
-@admin.route('/users',methods=['POST'])
+@admin.post('/users')
 def add_user():
   nom = request.json.get('nom', '')
   prenom = request.json.get('prenom', '')
@@ -23,7 +23,7 @@ def add_user():
 
 
 #get all users
-@admin.route('/users', methods=['GET'])
+@admin.get('/users')
 def get_users():
   all_users = Personnes.query.all()
   result = users_schema.dump(all_users)
@@ -32,7 +32,7 @@ def get_users():
 
 
 #delete a user 
-@admin.route('/users/<id>', methods=['DELETE'])
+@admin.delete('/users/<id>')
 def delete_user(id):
   user =Personnes.query.get(id)
   db.session.delete(user)
@@ -41,7 +41,7 @@ def delete_user(id):
   return user_schema.jsonify(user)
 
 #get a user by id
-@admin.route('/users/<id>', methods=['GET'])
+@admin.get('/users/<id>')
 def get_user(id):
   user = Personnes.query.get(id)
   return user_schema.jsonify(user)

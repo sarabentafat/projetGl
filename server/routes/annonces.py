@@ -2,7 +2,7 @@ from flask import Blueprint ,request,jsonify
 from modals import annonce_schema,Annonces,annonces_schema,db
 
 
-annonces = Blueprint('annonces',__name__,url_prefix='/api/annonces')
+annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
 
 @annonces.route('/', methods=['POST'])
 def add_annonce():

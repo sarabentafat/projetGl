@@ -6,6 +6,9 @@ class Config:
     JWT_TOKEN_LOCATION = config('JWT_TOKEN_LOCATION')
     JWT_COOKIE_SECURE = config('JWT_COOKIE_SECURE',cast=bool)
     JWT_SECRET_KEY = config('JWT_SECRET_KEY')
+    GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
+    GOOGLE_CLINET_SECRET = config('GOOGLE_CLINET_SECRET')
+    WEBSITE_URL = config('WEBSITE_URL')
 
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))

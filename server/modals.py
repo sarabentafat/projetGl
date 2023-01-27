@@ -20,7 +20,7 @@ class ModalitesEnum(str,enum.Enum): # i added str inhretance cuz apparently seri
 class Personnes(db.Model): 
     id = db.Column("id",db.Integer,primary_key=True)
     nom = db.Column("nom",db.String(100),nullable =False)
-    googleId = db.Column("googleId",db.Integer,primary_key=True)
+    # googleId = db.Column("googleId",db.Integer,primary_key=True)
     prenom = db.Column("prenom",db.String(60),nullable=False)
     tel = db.Column("tel",db.String(20),nullable=True)
     email = db.Column("email", db.String(120),unique=True, nullable=False)
