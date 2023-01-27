@@ -12,6 +12,8 @@ flask-migrate = "*"
 flask-restx = "*"
 flask-jwt-extended = "*"
 python-decouple = "*"
+flask-cors = "*"
+authlib = "*"
 
 [dev-packages]
 
