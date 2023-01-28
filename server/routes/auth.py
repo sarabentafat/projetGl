@@ -37,7 +37,6 @@ def register():
 @auth.get('/login')
 @error_handler()
 def login() : 
-    raise ValueError('Error')
     google = oauth.create_client('google')  # create the google oauth client
     redirect_uri = url_for('auth.google_callback', _external=True)
     return google.authorize_redirect(redirect_uri)
