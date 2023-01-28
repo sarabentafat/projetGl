@@ -3,14 +3,11 @@ import os
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
-from modals import db,ma
+from models import db,ma
 from routes.admin import admin
 from routes.annonces import annonces
 from routes.auth import auth,oauth
 from config import DevConfig
-
-
-from authlib.integrations.flask_client import OAuth
 
 
 
@@ -39,5 +36,5 @@ if __name__ == "__main__":
     app.register_blueprint(admin)
     app.register_blueprint(annonces)
 
-    #! run server
+    #! run 
     app.run()

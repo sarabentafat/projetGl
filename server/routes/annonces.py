@@ -1,10 +1,12 @@
 from flask import Blueprint ,request,jsonify
-from modals import annonce_schema,Annonces,annonces_schema,db
+from models import annonce_schema,Annonces,annonces_schema,db
+from flask_jwt_extended import jwt_required
 
 
 annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
 
-@annonces.route('/', methods=['POST'])
+@annonces.post('/')
+@jwt_required()
 def add_annonce():
   theme = request.json.get('theme', '')
   description = request.json.get('decription', '')
@@ -24,7 +26,8 @@ def add_annonce():
 
 
 #get all annonces
-@annonces.route('/', methods=['GET'])
+@annonces.get('/')
+@jwt_required()
 def get_annonces():
   all_annonces = Annonces.query.all()
   result = annonces_schema.dump(all_annonces)
@@ -32,7 +35,8 @@ def get_annonces():
 
 
 #get annonce by id
-@annonces.route('/<annonce_id>', methods=['GET'])
+@annonces.get('/<annonce_id>')
+@jwt_required()
 def get_annonce(annonce_id):
   annonce = Annonces.query.get(annonce_id)
   return annonce_schema.jsonify(annonce)
@@ -40,7 +44,8 @@ def get_annonce(annonce_id):
 
 
 #update
-@annonces.route('/<id>', methods=['PUT'])
+@annonces.put('/<id>')
+@jwt_required()
 def update_annonce(id):
   annonce = Annonces.query.get(id)
 
@@ -69,7 +74,8 @@ def update_annonce(id):
 
 
 #deletes an announce
-@annonces.route('/<annonce_id>', methods=['DELETE'])
+@annonces.delete('/<annonce_id>')
+@jwt_required()
 def delete_annonce(annonce_id):
   annonce =Annonces.query.get(annonce_id)
   db.session.delete(annonce)
@@ -83,7 +89,8 @@ def delete_annonce(annonce_id):
     #annonce = Annonces.query.filter_by(id=annonce_id).one()
 
 #all favorite announces 
-@annonces.route('/favorites',methods=['GET'])
+@annonces.get('/favorites')
+@jwt_required()
 def get_fav_annonces():
   favorite_annonces=  Annonces.query.filter(Annonces.favorite==True).all()
   result = annonces_schema.dump(favorite_annonces)
