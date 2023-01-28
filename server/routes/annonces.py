@@ -1,8 +1,8 @@
 from flask import Blueprint ,request,jsonify
-from models import annonce_schema,Annonces,annonces_schema,db
+from server.models import annonce_schema,Annonces,annonces_schema,db
 from flask_jwt_extended import jwt_required,get_jwt_identity
-from utils.error_handler import error_handler
-from utils.errors import InvalidParamsError
+from server.utils.error_handler import error_handler
+from server.utils.errors import InvalidParamsError
 
 
 annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
@@ -23,7 +23,7 @@ def add_annonce():
   if pers_id== None or theme== None or description== None or tarif== None or modalite== None or categorie== None or  titre== None :
     raise InvalidParamsError()
 
-  new_annonce = Annonces(titre=titre,theme=theme, description=description, tarif=tarif,modalite=modalite,categorie=categorie,favorite=favorite,adresse=adresse,pers_id=pers_id)
+  new_annonce = Annonces(titre=titre,theme=theme, description=description, tarif=tarif,modalite=modalite,categorie=categorie,adresse=adresse,pers_id=pers_id)
 
   db.session.add(new_annonce)
   db.session.commit()

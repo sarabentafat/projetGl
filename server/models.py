@@ -7,6 +7,14 @@ from flask_marshmallow import Marshmallow
 db = SQLAlchemy()
 ma= Marshmallow()
 
+
+from flask import Blueprint
+modals_bp = Blueprint('models', __name__)
+
+
+
+
+
 from flask import Blueprint
 modals_bp = Blueprint('models', __name__)
 
@@ -19,10 +27,14 @@ class CategoriesEnum(str,enum.Enum):
 class ModalitesEnum(str,enum.Enum): # i added str inhretance cuz apparently serializing enum is not supported
     offline = 'offline'
     online = 'online'
+    
+
+
 
 class Personnes(db.Model): 
     id = db.Column("id",db.String(100),primary_key=True)
     nom = db.Column("nom",db.String(100),nullable =False)
+    # googleId = db.Column("googleId",db.Integer,primary_key=True)
     prenom = db.Column("prenom",db.String(60),nullable=False)
     tel = db.Column("tel",db.String(20),nullable=True)
     email = db.Column("email", db.String(120),unique=True, nullable=False)
@@ -53,8 +65,9 @@ class Adresse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     wilaya =db.Column("wilaya",db.String(100),nullable=False)
     commune =db.Column("commune",db.String(100),nullable=False)
-    lieuExact =db.Column("lieuExact",db.String(150),nullable=False) 
+    lieuExact =db.Column("lieuExact",db.String(150),nullable=False) #adressebienimmo
     annonces = db.relationship('Annonces', uselist=False,backref="adresse_annonce",cascade="all,delete")
+    # personnes = db.relationship("Personnes", uselist=False, backref="adresse_personne",cascade="all,delete") #useList for one to one rel
     
     def __init__(self,wilaya,commune,lieuExact):
         
@@ -99,6 +112,13 @@ class Favorites(db.Model):
 
 
 
+class Favorites(db.Model):
+    idFav = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(100), db.ForeignKey('personnes.id'))
+    annonce_id = db.Column(db.Integer, db.ForeignKey('annonces.annonce_id'))
+    def __init__(self,user_id,annonce_id):
+      self.user_id = user_id
+      self.annonce_id=annonce_id
 
 class Photos(db.Model):
     id_photo = db.Column(db.Integer,primary_key=True)
@@ -142,6 +162,7 @@ class AnnonceSchema(ma.SQLAlchemyAutoSchema):
     model=Annonces
     load_instance = True
     sqla_session = db.session
+    include_relationships = True
     include_fk=True
 annonce_schema = AnnonceSchema()
 annonces_schema = AnnonceSchema(many=True)
@@ -150,6 +171,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     model= Personnes
     load_instance = True
     sqla_session = db.session
+    include_fk=True
     
     #annonces = fields.Nested(annonce_schema, many=True)
 
@@ -161,7 +183,5 @@ class FavoriteSchema(ma.SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
-favorite_schema = FavoriteSchema()
-favorites_schema = FavoriteSchema(many=True)
 
 

@@ -21,6 +21,8 @@ JWTManager(app)  #  will get the SECKRET_KEY from DevConfig
 
 db.app = app
 ma.app = app
+db.init_app(app)
+ma.init_app(app)
 db.init_app(app=app)
 
 migrate = Migrate(app, db)
