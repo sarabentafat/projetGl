@@ -1,8 +1,8 @@
 from flask import Blueprint ,request,jsonify
-from server.models import annonce_schema,Annonces,annonces_schema,db
+from models import annonce_schema,Annonces,annonces_schema,db
 from flask_jwt_extended import jwt_required,get_jwt_identity
-from server.utils.error_handler import error_handler
-from server.utils.errors import InvalidParamsError
+from utils.error_handler import error_handler
+from utils.errors import InvalidParamsError
 
 
 annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
@@ -49,7 +49,16 @@ def get_annonce(annonce_id):
   annonce = Annonces.query.get(annonce_id)
   return annonce_schema.jsonify(annonce)
 
-
+#get annonce of a user 
+@annonces.get('/myannonces')
+@error_handler()
+@jwt_required()
+def get_user_annonces(): 
+  user_id = get_jwt_identity()
+  annonces = Annonces.query.filter(Annonces.pers_id==user_id).all()
+  result = annonces_schema.dump(annonces)
+  return jsonify(result)
+  
 
 #update
 @annonces.put('/<id>')

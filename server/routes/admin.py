@@ -1,5 +1,5 @@
 from flask import Blueprint,request,jsonify
-from server.models import db, Personnes,user_schema,users_schema
+from models import db, Personnes,user_schema,users_schema
 from flask_jwt_extended import jwt_required
 
 

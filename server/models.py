@@ -15,8 +15,7 @@ modals_bp = Blueprint('models', __name__)
 
 
 
-from flask import Blueprint
-modals_bp = Blueprint('models', __name__)
+
 
 
 #-----------------------------------------database--------------
@@ -112,13 +111,7 @@ class Favorites(db.Model):
 
 
 
-class Favorites(db.Model):
-    idFav = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(100), db.ForeignKey('personnes.id'))
-    annonce_id = db.Column(db.Integer, db.ForeignKey('annonces.annonce_id'))
-    def __init__(self,user_id,annonce_id):
-      self.user_id = user_id
-      self.annonce_id=annonce_id
+
 
 class Photos(db.Model):
     id_photo = db.Column(db.Integer,primary_key=True)
@@ -183,5 +176,7 @@ class FavoriteSchema(ma.SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
+favorite_schema = FavoriteSchema()
+favorites_schema = FavoriteSchema(many=True)
 
 
