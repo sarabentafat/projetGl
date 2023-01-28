@@ -9,6 +9,8 @@ class Config:
     GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
     GOOGLE_CLINET_SECRET = config('GOOGLE_CLINET_SECRET')
     WEBSITE_URL = config('WEBSITE_URL')
+    # JWT_SESSION_COOKIE = False
+    # JWT_ACCESS_TOKEN_EXPIRES = config('JWT_ACCESS_TOKEN_EXPIRES')
 
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))

@@ -18,19 +18,19 @@ class ModalitesEnum(str,enum.Enum): # i added str inhretance cuz apparently seri
     online = 'online'
 
 class Personnes(db.Model): 
-    id = db.Column("id",db.Integer,primary_key=True)
+    id = db.Column("id",db.String(100),primary_key=True)
     nom = db.Column("nom",db.String(100),nullable =False)
-    # googleId = db.Column("googleId",db.Integer,primary_key=True)
     prenom = db.Column("prenom",db.String(60),nullable=False)
     tel = db.Column("tel",db.String(20),nullable=True)
     email = db.Column("email", db.String(120),unique=True, nullable=False)
     isadmin= db.Column("isadmin", db.Boolean ,default=False )
-    adresse = db.Column(db.Integer, db.ForeignKey('adresse.id',),nullable=False)
+    adresse = db.Column(db.Integer, db.ForeignKey('adresse.id',),nullable=True)
     annonces = db.relationship('Annonces', backref='personne_annonces',cascade="all,delete")
     comments = db.relationship('Comments',backref='personne_comments',cascade="all,delete")
 
    
-    def __init__(self,nom,prenom , email,tel,adresse,isadmin):
+    def __init__(self,id,nom,prenom , email,tel,adresse,isadmin):
+        self.id =id
         self.nom = nom
         self.email=email
         self.prenom=prenom
@@ -43,7 +43,7 @@ class Comments(db.Model):
   id_comment = db.Column(db.Integer,primary_key=True)
   text = db.Column(db.String(255),nullable=False)
   date_created = db.Column(db.DateTime,default=datetime.utcnow)
-  author = db.Column(db.Integer , db.ForeignKey('personnes.id'), nullable=False)
+  author = db.Column(db.String(100) , db.ForeignKey('personnes.id'), nullable=False)
   post_id = db.Column(db.Integer , db.ForeignKey('annonces.annonce_id'), nullable=False)
   def __init__(self,text):
         self.text=text
@@ -73,7 +73,7 @@ class Annonces(db.Model):
     categorie = db.Column(db.Enum(CategoriesEnum),nullable=False)
     favorite = db.Column("favorite", db.Boolean ,default=False, nullable=True )
     date_posted = db.Column(db.DateTime,default=datetime.utcnow)
-    pers_id = db.Column(db.Integer, db.ForeignKey('personnes.id'),nullable=True)#update to false
+    pers_id = db.Column(db.String(100) , db.ForeignKey('personnes.id'),nullable=True)#update to false
     adresse = db.Column(db.Integer, db.ForeignKey('adresse.id'),nullable=True)#update to false
     comments = db.relationship('Comments',backref='annonces_comments',cascade="all,delete")
     photos = db.relationship('Photos',backref='annonces_photos',cascade="all,delete")
