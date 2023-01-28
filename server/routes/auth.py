@@ -1,9 +1,9 @@
 from flask import Blueprint,request,jsonify,url_for,redirect,make_response
-from models import db, Personnes,user_schema,users_schema
+from server.models import db, Personnes,user_schema,users_schema
 from flask_jwt_extended import create_access_token,set_access_cookies,unset_jwt_cookies,jwt_required,get_jwt_identity
-from config import Config
+from server.config import Config
 from authlib.integrations.flask_client import OAuth
-from config import Config 
+
 from utils.error_handler import error_handler
 
 # oAuth Setup
