@@ -106,11 +106,5 @@ def delete_annonce(annonce_id):
   return annonce_schema.jsonify(annonce)
 
 
-#all favorite announces 
-@annonces.get('/favorites')
-@error_handler()
-@jwt_required()
-def get_fav_annonces():
-  favorite_annonces=  Annonces.query.filter(Annonces.favorite==True).all()
-  result = annonces_schema.dump(favorite_annonces)
-  return jsonify(result)
+
+#todo : add new comment for specific post

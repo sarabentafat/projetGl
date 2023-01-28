@@ -15,6 +15,9 @@ modals_bp = Blueprint('models', __name__)
 
 
 
+from flask import Blueprint
+modals_bp = Blueprint('models', __name__)
+
 
 #-----------------------------------------database--------------
 class CategoriesEnum(str,enum.Enum):
@@ -64,7 +67,7 @@ class Adresse(db.Model):
     commune =db.Column("commune",db.String(100),nullable=False)
     lieuExact =db.Column("lieuExact",db.String(150),nullable=False) #adressebienimmo
     annonces = db.relationship('Annonces', uselist=False,backref="adresse_annonce",cascade="all,delete")
-    
+    # personnes = db.relationship("Personnes", uselist=False, backref="adresse_personne",cascade="all,delete") #useList for one to one rel
     
     def __init__(self,wilaya,commune,lieuExact):
         
@@ -99,6 +102,13 @@ class Annonces(db.Model):
         
 
 
+class Favorites(db.Model):
+    idFav = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(100), db.ForeignKey('personnes.id'))
+    annonce_id = db.Column(db.Integer, db.ForeignKey('annonces.annonce_id'))
+    def __init__(self,user_id,annonce_id):
+      self.user_id = user_id
+      self.annonce_id=annonce_id
 
 
 
@@ -173,4 +183,5 @@ class FavoriteSchema(ma.SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
-favorite_schema = FavoriteSchema()
+
+
