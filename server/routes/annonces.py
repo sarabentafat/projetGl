@@ -1,13 +1,16 @@
 from flask import Blueprint ,request,jsonify
 from models import annonce_schema,Annonces,annonces_schema,db
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required,get_jwt_identity
+from utils.error_handler import error_handler
 
 
 annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
 
 @annonces.post('/')
 @jwt_required()
+@error_handler()
 def add_annonce():
+  pers_id = get_jwt_identity()  #* add of the current user
   theme = request.json.get('theme', '')
   description = request.json.get('decription', '')
   tarif = request.json.get('tarif', '')
@@ -16,7 +19,6 @@ def add_annonce():
   favorite= request.json.get('favorite', '')
   adresse= request.json.get('adresse', '')
   titre= request.json.get('titre', '')
-  pers_id = request.json.get('pers_id','')
   new_annonce = Annonces(titre=titre,theme=theme, description=description, tarif=tarif,modalite=modalite,categorie=categorie,favorite=favorite,adresse=adresse,pers_id=pers_id)
 
   db.session.add(new_annonce)
@@ -47,6 +49,7 @@ def get_annonce(annonce_id):
 @annonces.put('/<id>')
 @jwt_required()
 def update_annonce(id):
+  user_id = get_jwt_identity()
   annonce = Annonces.query.get(id)
 
   theme = request.json['theme']
@@ -96,11 +99,5 @@ def get_fav_annonces():
   result = annonces_schema.dump(favorite_annonces)
   return jsonify(result)
 
-""" #fav annonces by user
-@annonces.route('/users/<id>/favorites',methods=['GET'])
-def get_fav_annonces():
-  favorite_annonces=  Annonces.query.filter(Annonces.favorite==True).all()
-  result = annonces_schema.dump(favorite_annonces)
-  return jsonify(result)"""
 
 

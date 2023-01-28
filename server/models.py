@@ -24,7 +24,7 @@ class Personnes(db.Model):
     tel = db.Column("tel",db.String(20),nullable=True)
     email = db.Column("email", db.String(120),unique=True, nullable=False)
     isadmin= db.Column("isadmin", db.Boolean ,default=False )
-    adresse = db.Column(db.Integer, db.ForeignKey('adresse.id',),nullable=True)
+    # adresse = db.Column(db.Integer, db.ForeignKey('adresse.id',),nullable=True)
     annonces = db.relationship('Annonces', backref='personne_annonces',cascade="all,delete")
     comments = db.relationship('Comments',backref='personne_comments',cascade="all,delete")
 
@@ -34,7 +34,7 @@ class Personnes(db.Model):
         self.nom = nom
         self.email=email
         self.prenom=prenom
-        self.adresse = adresse
+        # self.adresse = adresse
         self.tel = tel
         self.isadmin = isadmin
 
@@ -55,7 +55,7 @@ class Adresse(db.Model):
     commune =db.Column("commune",db.String(100),nullable=False)
     lieuExact =db.Column("lieuExact",db.String(150),nullable=False) 
     annonces = db.relationship('Annonces', uselist=False,backref="adresse_annonce",cascade="all,delete")
-    personnes = db.relationship("Personnes", uselist=False, backref="adresse_personne",cascade="all,delete") #useList for one to one rel
+    # personnes = db.relationship("Personnes", uselist=False, backref="adresse_personne",cascade="all,delete") #useList for one to one rel
     
     def __init__(self,wilaya,commune,lieuExact):
         
@@ -71,7 +71,7 @@ class Annonces(db.Model):
     titre = db.Column("titre",db.String(100),nullable=False)
     modalite = db.Column(db.Enum(ModalitesEnum),nullable=False)
     categorie = db.Column(db.Enum(CategoriesEnum),nullable=False)
-    favorite = db.Column("favorite", db.Boolean ,default=False, nullable=True )
+    # favorite = db.Column("favorite", db.Boolean ,default=False, nullable=True )
     date_posted = db.Column(db.DateTime,default=datetime.utcnow)
     pers_id = db.Column(db.String(100) , db.ForeignKey('personnes.id'),nullable=True)#update to false
     adresse = db.Column(db.Integer, db.ForeignKey('adresse.id'),nullable=True)#update to false
@@ -86,7 +86,7 @@ class Annonces(db.Model):
         self.tarif=tarif
         self.modalite=modalite 
         self.categorie =categorie
-        self.favorite =favorite
+        # self.favorite =favorite
         self.adresse = adresse
         self.pers_id = pers_id
 
