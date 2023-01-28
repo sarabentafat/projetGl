@@ -4,7 +4,7 @@ from flask_jwt_extended import create_access_token,set_access_cookies,unset_jwt_
 from config import Config
 from authlib.integrations.flask_client import OAuth
 
-from utils.error_handler import error_handler
+from server.utils.error_handler import error_handler
 
 # oAuth Setup
 oauth= OAuth()
