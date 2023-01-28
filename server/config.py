@@ -19,6 +19,7 @@ class DevConfig(Config) :
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'+os.path.join(BASE_DIR,'db.sqlite')   # dev.db  #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
     DEBUG = True 
     SQLALCHEMY_ECHO = True 
+    JWT_ACCESS_TOKEN_EXPIRES = 60 * 60 * 24 * 5
 
 class ProdConfig(Config):
     pass 
