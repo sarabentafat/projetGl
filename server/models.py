@@ -7,6 +7,9 @@ from flask_marshmallow import Marshmallow
 db = SQLAlchemy()
 ma= Marshmallow()
 
+from flask import Blueprint
+modals_bp = Blueprint('models', __name__)
+
 
 #-----------------------------------------database--------------
 class CategoriesEnum(str,enum.Enum):
@@ -24,17 +27,14 @@ class Personnes(db.Model):
     tel = db.Column("tel",db.String(20),nullable=True)
     email = db.Column("email", db.String(120),unique=True, nullable=False)
     isadmin= db.Column("isadmin", db.Boolean ,default=False )
-    # adresse = db.Column(db.Integer, db.ForeignKey('adresse.id',),nullable=True)
     annonces = db.relationship('Annonces', backref='personne_annonces',cascade="all,delete")
     comments = db.relationship('Comments',backref='personne_comments',cascade="all,delete")
-
+    favorites = db.relationship('Favorites', backref='personne_favorites',cascade="all,delete")
    
-    def __init__(self,id,nom,prenom , email,tel,adresse,isadmin):
-        self.id =id
+    def __init__(self,nom,prenom , email,tel,isadmin):
         self.nom = nom
         self.email=email
         self.prenom=prenom
-        # self.adresse = adresse
         self.tel = tel
         self.isadmin = isadmin
 
@@ -55,7 +55,6 @@ class Adresse(db.Model):
     commune =db.Column("commune",db.String(100),nullable=False)
     lieuExact =db.Column("lieuExact",db.String(150),nullable=False) 
     annonces = db.relationship('Annonces', uselist=False,backref="adresse_annonce",cascade="all,delete")
-    # personnes = db.relationship("Personnes", uselist=False, backref="adresse_personne",cascade="all,delete") #useList for one to one rel
     
     def __init__(self,wilaya,commune,lieuExact):
         
@@ -71,27 +70,32 @@ class Annonces(db.Model):
     titre = db.Column("titre",db.String(100),nullable=False)
     modalite = db.Column(db.Enum(ModalitesEnum),nullable=False)
     categorie = db.Column(db.Enum(CategoriesEnum),nullable=False)
-    # favorite = db.Column("favorite", db.Boolean ,default=False, nullable=True )
     date_posted = db.Column(db.DateTime,default=datetime.utcnow)
-    pers_id = db.Column(db.String(100) , db.ForeignKey('personnes.id'),nullable=True)#update to false
+    pers_id = db.Column(db.String(100), db.ForeignKey('personnes.id'),nullable=True)#update to false
     adresse = db.Column(db.Integer, db.ForeignKey('adresse.id'),nullable=True)#update to false
     comments = db.relationship('Comments',backref='annonces_comments',cascade="all,delete")
     photos = db.relationship('Photos',backref='annonces_photos',cascade="all,delete")
-    
+    favorites = db.relationship('Favorites', backref='annonce_favorites',cascade="all,delete")
 
-    def __init__(self,titre,theme,description,tarif,modalite,categorie,favorite,adresse,pers_id):
+    def __init__(self,titre,theme,description,tarif,modalite,categorie,adresse,pers_id):
         self.titre=titre
         self.theme=theme
         self.description = description
         self.tarif=tarif
         self.modalite=modalite 
         self.categorie =categorie
-        # self.favorite =favorite
         self.adresse = adresse
         self.pers_id = pers_id
+        
 
 
-
+class Favorites(db.Model):
+    idFav = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(100), db.ForeignKey('personnes.id'))
+    annonce_id = db.Column(db.Integer, db.ForeignKey('annonces.annonce_id'))
+    def __init__(self,user_id,annonce_id):
+      self.user_id = user_id
+      self.annonce_id=annonce_id
 
 
 
@@ -151,6 +155,13 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
+class FavoriteSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Favorites
+        include_relationships = True
+        load_instance = True
 
+favorite_schema = FavoriteSchema()
+favorites_schema = FavoriteSchema(many=True)
 
 
