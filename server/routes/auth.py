@@ -1,7 +1,7 @@
 from flask import Blueprint,request,jsonify,url_for,redirect,make_response
-from server.models import db, Personnes,user_schema,users_schema
+from models import db, Personnes,user_schema,users_schema
 from flask_jwt_extended import create_access_token,set_access_cookies,unset_jwt_cookies,jwt_required,get_jwt_identity
-from server.config import Config
+from config import Config
 from authlib.integrations.flask_client import OAuth
 
 from utils.error_handler import error_handler
@@ -34,12 +34,21 @@ def register():
     return google.authorize_redirect(redirect_uri)
 
 
+# @auth.get('/login')
+# @error_handler()
+# def login() : 
+#     google = oauth.create_client('google')  # create the google oauth client
+#     redirect_uri = url_for('auth.google_callback', _external=True)
+#     return google.authorize_redirect(redirect_uri)
+
 @auth.get('/login')
 @error_handler()
-def login() : 
-    google = oauth.create_client('google')  # create the google oauth client
-    redirect_uri = url_for('auth.google_callback', _external=True)
-    return google.authorize_redirect(redirect_uri)
+def login() :
+    google_id  =request.json.get('google_id')
+    response = jsonify({'msg':'login success'})
+    access_token = create_access_token(identity=google_id) #* will get infos from googleid
+    set_access_cookies(response,access_token)
+    return response
 
 
 @auth.post('/logout')
@@ -104,10 +113,9 @@ def google_callback() :
         prenom = user_info['given_name']
         email = user_info['email']
         tel ='0565856897'  #random val
-        adresse= 154 #random val
         isadmin= False
     
-        new_user = Personnes(id=id,  nom=nom,prenom=prenom, email=email,tel=tel,adresse=adresse,isadmin=isadmin)
+        new_user = Personnes(id=id,  nom=nom,prenom=prenom, email=email,tel=tel,isadmin=isadmin)
         db.session.add(new_user)
         db.session.commit()
 

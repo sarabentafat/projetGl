@@ -7,17 +7,8 @@ from flask_marshmallow import Marshmallow
 db = SQLAlchemy()
 ma= Marshmallow()
 
-
 from flask import Blueprint
-modals_bp = Blueprint('models', __name__)
-
-
-
-
-
-from flask import Blueprint
-modals_bp = Blueprint('models', __name__)
-
+modals_bp =Blueprint('models',__name__)
 
 #-----------------------------------------database--------------
 class CategoriesEnum(str,enum.Enum):
@@ -43,7 +34,8 @@ class Personnes(db.Model):
     comments = db.relationship('Comments',backref='personne_comments',cascade="all,delete")
     favorites = db.relationship('Favorites', backref='personne_favorites',cascade="all,delete")
    
-    def __init__(self,nom,prenom , email,tel,isadmin):
+    def __init__(self,id,nom,prenom , email,tel,isadmin):
+        self.id = id 
         self.nom = nom
         self.email=email
         self.prenom=prenom
@@ -102,13 +94,6 @@ class Annonces(db.Model):
         
 
 
-class Favorites(db.Model):
-    idFav = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(100), db.ForeignKey('personnes.id'))
-    annonce_id = db.Column(db.Integer, db.ForeignKey('annonces.annonce_id'))
-    def __init__(self,user_id,annonce_id):
-      self.user_id = user_id
-      self.annonce_id=annonce_id
 
 
 
@@ -183,5 +168,8 @@ class FavoriteSchema(ma.SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
 
+
+favorite_schema = FavoriteSchema()
+favorites_schema = FavoriteSchema(many=True)
 
 

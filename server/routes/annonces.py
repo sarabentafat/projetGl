@@ -1,20 +1,21 @@
 from flask import Blueprint ,request,jsonify
-from server.models import annonce_schema,Annonces,annonces_schema,db
+from models import annonce_schema,Annonces,annonces_schema,db
 from flask_jwt_extended import jwt_required,get_jwt_identity
-from server.utils.error_handler import error_handler
-from server.utils.errors import InvalidParamsError
+from utils.error_handler import error_handler
+from utils.errors import InvalidParamsError
 
 
 annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
 
 @annonces.post('/')
-@jwt_required()
 @error_handler()
+@jwt_required()
 def add_annonce():
   pers_id = get_jwt_identity()  #* add of the current user
+  # pers_id = '111741026364914091469'  #* add of the current user
   theme = request.json.get('theme', '')
   description = request.json.get('decription', '')
-  tarif = request.json.get('tarif', '')
+  tarif = request.json.get('tarif', 0)
   modalite = request.json.get('modalite', '')
   categorie = request.json.get('categorie', '')
   adresse= request.json.get('adresse', '')
