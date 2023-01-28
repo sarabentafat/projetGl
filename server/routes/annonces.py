@@ -2,6 +2,7 @@ from flask import Blueprint ,request,jsonify
 from models import annonce_schema,Annonces,annonces_schema,db
 from flask_jwt_extended import jwt_required,get_jwt_identity
 from utils.error_handler import error_handler
+from utils.errors import InvalidParamsError
 
 
 annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
@@ -15,10 +16,13 @@ def add_annonce():
   description = request.json.get('decription', '')
   tarif = request.json.get('tarif', '')
   modalite = request.json.get('modalite', '')
-  categorie= request.json.get('categorie', '')
-  favorite= request.json.get('favorite', '')
+  categorie = request.json.get('categorie', '')
   adresse= request.json.get('adresse', '')
   titre= request.json.get('titre', '')
+
+  if pers_id== None or theme== None or description== None or tarif== None or modalite== None or categorie== None or  titre== None :
+    raise InvalidParamsError()
+
   new_annonce = Annonces(titre=titre,theme=theme, description=description, tarif=tarif,modalite=modalite,categorie=categorie,favorite=favorite,adresse=adresse,pers_id=pers_id)
 
   db.session.add(new_annonce)
@@ -29,6 +33,7 @@ def add_annonce():
 
 #get all annonces
 @annonces.get('/')
+@error_handler()
 @jwt_required()
 def get_annonces():
   all_annonces = Annonces.query.all()
@@ -38,6 +43,7 @@ def get_annonces():
 
 #get annonce by id
 @annonces.get('/<annonce_id>')
+@error_handler()
 @jwt_required()
 def get_annonce(annonce_id):
   annonce = Annonces.query.get(annonce_id)
@@ -47,10 +53,16 @@ def get_annonce(annonce_id):
 
 #update
 @annonces.put('/<id>')
+@error_handler()
 @jwt_required()
 def update_annonce(id):
   user_id = get_jwt_identity()
   annonce = Annonces.query.get(id)
+  if annonce == None :
+    raise InvalidParamsError(f'Annonce  with id : {id} not found')
+
+  if annonce.pers_id != user_id :
+    raise InvalidParamsError(f"you're not the owner of this annonce")
 
   theme = request.json['theme']
   titre = request.json['titre']
@@ -58,7 +70,6 @@ def update_annonce(id):
   tarif = request.json['tarif']
   modalite = request.json['modalite']
   categorie= request.json['categorie']
-  favorite= request.json['categorie']
   adresse= request.json['adresse']
 
   annonce.theme= theme
@@ -66,7 +77,6 @@ def update_annonce(id):
   annonce.tarif = tarif 
   annonce.modalite =modalite
   annonce.categorie= categorie 
-  annonce.favorite= favorite
   annonce.adresse = adresse
   annonce.titre = titre
  
@@ -78,26 +88,29 @@ def update_annonce(id):
 
 #deletes an announce
 @annonces.delete('/<annonce_id>')
+@error_handler()
 @jwt_required()
 def delete_annonce(annonce_id):
+  user_id = get_jwt_identity()
   annonce =Annonces.query.get(annonce_id)
+
+  if annonce == None :
+    raise InvalidParamsError(f'Annonce  with id : {id} not found')
+
+  if annonce.pers_id != user_id :
+    raise InvalidParamsError(f"you're not the owner of this annonce")
+
   db.session.delete(annonce)
   db.session.commit()
 
   return annonce_schema.jsonify(annonce)
 
-    #annonces = Annonces.query.order_by(Annonces.date_posted.desc()).all()
-
-
-    #annonce = Annonces.query.filter_by(id=annonce_id).one()
 
 #all favorite announces 
 @annonces.get('/favorites')
+@error_handler()
 @jwt_required()
 def get_fav_annonces():
   favorite_annonces=  Annonces.query.filter(Annonces.favorite==True).all()
   result = annonces_schema.dump(favorite_annonces)
   return jsonify(result)
-
-
-
