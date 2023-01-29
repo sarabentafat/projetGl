@@ -65,13 +65,13 @@ def update_annonce(id):
   if annonce.pers_id != user_id :
     raise InvalidParamsError(f"you're not the owner of this annonce")
 
-  theme = request.json['theme']
-  titre = request.json['titre']
-  description = request.json['description']
-  tarif = request.json['tarif']
-  modalite = request.json['modalite']
-  categorie= request.json['categorie']
-  adresse= request.json['adresse']
+  theme = request.json.get('theme',annonce.theme)
+  titre = request.json.get('titre',annonce.titre)
+  description = request.json.get('description',annonce.description)
+  tarif = request.json.get('tarif',annonce.tarif)
+  modalite = request.json.get('modalite',annonce.modalite)
+  categorie= request.json.get('categorie',annonce.categorie)
+  adresse= request.json.get('adresse',annonce.adresse)
 
   annonce.theme= theme
   annonce.description = description

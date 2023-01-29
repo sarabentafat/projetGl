@@ -13,7 +13,7 @@ favorites = Blueprint('favorites',__name__,url_prefix='/favorites')
 @jwt_required()
 def get_my_favorites():
   user_id = get_jwt_identity()
-  favorite_annonces=  Favorites.query.filter(user_id=user_id).all()
+  favorite_annonces=  Favorites.query.filter_by(user_id=user_id).all()
   result = annonces_schema.dump(favorite_annonces)
   return jsonify(result)
 
@@ -25,7 +25,7 @@ def get_my_favorites():
 def delete_favorite(id):
   favorite_annonce = Favorites.query.get(id)
   if favorite_annonce == None :
-    raise InvalidParamsError()
+    raise InvalidParamsError(f"Annonce id : {id} not found in favorites")
 
   db.session.delete(favorite_annonce)
   db.session.commit()
@@ -40,6 +40,9 @@ def delete_favorite(id):
 def add_to_favorites(id):
   annonce_id = id 
   user_id = get_jwt_identity() 
+  favorite_exists = Favorites.query.filter_by(annonce_id= id).first()
+  if favorite_exists != None :
+    raise InvalidParamsError(f"Annonce id : {id} already in favorites")
   
   favorite = Favorites(user_id=user_id,annonce_id=annonce_id)
   db.session.add(favorite)
