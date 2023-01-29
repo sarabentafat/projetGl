@@ -7,15 +7,15 @@ import ENDPOINTS from "../api/endPoints";
 
 function Home() {
   const [annonces, setAnnonces] = useState([]);
-  const fetchAnnonces = async () => {
-    try {
-      const response = await axios.get(ENDPOINTS.ANNONCES);
-      setAnnonces(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useEffect(() => {
+    const fetchAnnonces = async () => {
+      try {
+        const response = await axios.get(ENDPOINTS.ANNONCES);
+        setAnnonces(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     fetchAnnonces();
   }, []);
 
