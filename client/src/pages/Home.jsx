@@ -5,7 +5,7 @@ import Nav from '../components/Nav'
 
 function Home() {
   return (
-    <div  className='p-4 mx-10  '>
+    <div  className='p-4 mx-10 sm:mx-1  md:text-sm sm:text-xs  sm:ml-2 '>
         <Nav/>
         <div className='flex justify-between '>
             <LeftSideBar/>
@@ -13,6 +13,7 @@ function Home() {
         
         
         </div>
+        
      
        
     </div>

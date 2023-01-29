@@ -5,6 +5,7 @@ import googleIcon from '../assets/googleIcon.png'
 import tw from "tailwind-styled-components";
 import googleIcon2 from '../assets/googleicon2.png'
 import ellipse from '../assets/ellipse.png'
+import logo from '../assets/logo.png'
 // const StyledProduct = tw.div`
 // text-3xl font-bold underline 
 // `;
@@ -12,8 +13,8 @@ function Landing() {
   return (
     <div className='p-4 mx-10  '>
       <div className='flex justify-between'>
-        <div className='font-bold '>appname </div>
-        <div>
+       <img src={logo} alt="" className='w-15 h-10' />
+        <div className=''>
           <button className='border-2 border-blue-500 rounded-md font-thin p-1 flex bg-blue-500 text-white  '>
             <img src={googleIcon2 } alt="" className='w-5 m-1 mr-2
               ' />
@@ -40,7 +41,7 @@ function Landing() {
               ' />
             sign in with google </button>
         </div>
-        <div className='flex justify-center mr-[100px] pt-5'>
+        <div className='flex justify-center mr-[100px] pt-5 sm:w-[75%] '>
           
           <img src={landingPic} alt="student" />
         </div>

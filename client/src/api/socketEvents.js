@@ -1,0 +1,11 @@
+const socketEvents = {
+  SETUP: "SETUP",
+  CONNECTED: "CONNECTED",
+  TYPING: "TYPING",
+  STOP_TYPING: "STOP_TYPING",
+  JOIN_CHAT: "JOIN_CHAT",
+  NEW_MESSAGE: "NEW_MESSAGE",
+  MESSAGE_RECIEVED: "MESSAGE_RECIEVED",
+};
+
+export default socketEvents;

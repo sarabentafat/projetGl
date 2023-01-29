@@ -3,8 +3,8 @@ import cardPic from '../assets/cardPic.png'
 
 function Card() {
     return (
-        <div className='flex w-[80%] ml-10'>
-            <img src={cardPic} alt="module pic" className='w-[50%]' />
+        <div className='md:flex w-[80%] ml-10 sm:text-xs  '>
+            <img src={cardPic} alt="module pic" className='md:w-[50%] sm:w-full sm:h-[20%] md:h-[60%]'  />
 
             <div className=' w-full p-2'>
                 <div className='flex justify-between'>
@@ -13,12 +13,20 @@ function Card() {
                 </div>
                 <div className='font-thin'>
                     description descriptiondes criptiondes crip tiondescri ptiondesc ription descr iptionde
-                    ript ion dedescription descriptiondes criptiondes crip tiondescri ptiondesc ription des
-                    iptiondescdescription descriptiondes criptiondes crip tiondescri ptiondesc ription des
-                    iptiondescript ion dedescription descriptiondes criptiondes crip tiondescri
+                    ript icriptiondes crip tiondescri
                 </div>
-                <hr className='my-2'/>
-                <div className='font-bold'>Information sur l’annonce</div>
+                <hr className='my-2' />
+                <p class="">
+                    <a class="inline-block    focus:outline-none focus:ring-0  transition duration-150 ease-in-out" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <div className='font-bold'>
+                        => details
+                        </div>
+                    </a>
+                </p>
+
+                <div class="collapse" id="collapseExample2">
+                    <div class=" ">
+                    <div className='font-bold'>Information sur l’annonce</div>
                 <div className='flex'>
                     <div className='mr-4'>
                         <div>categorie</div>
@@ -33,9 +41,9 @@ function Card() {
                         <div>lieu</div>
                     </div>
                 </div>
-                <button  className='border p-1 border-blue-500 rounded-lg text-blue-500'>voir sur map</button>
-                <hr className='my-2'/>
-                <div  className='font-bold'>Information sur l’annonceur</div>
+                <button className='border p-1 border-blue-500 rounded-lg text-blue-500'>voir sur map</button>
+                <hr className='my-2' />
+                <div className='font-bold'>Information sur l’annonceur</div>
                 <div className='flex'>
                     <div className='mr-4'>
                         <div>nom</div>
@@ -51,9 +59,12 @@ function Card() {
                         <div>eleulma/setif/algeria</div>
                     </div>
                 </div>
-                <div className='flex justify-between'>
+                    </div>
+                </div>
+                
+                <div className='flex justify-between mt-2'>
                     <button className='border p-1 border-blue-500 text-blue-500 rounded-lg w-[50%] mr-1' >sauvegarder</button>
-                    <button className=' p-1 border-blue-500 text-white bg-blue-500 rounded-lg w-[50%]'>sauvegarder</button>
+                    <button className=' p-1 border-blue-500 text-white bg-blue-500 rounded-lg w-[50%]'>demander un offre</button>
                 </div>
 
 
