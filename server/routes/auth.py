@@ -33,12 +33,21 @@ def register():
     return google.authorize_redirect(redirect_uri)
 
 
+# @auth.get('/login')
+# @error_handler()
+# def login() : 
+#     google = oauth.create_client('google')  # create the google oauth client
+#     redirect_uri = url_for('auth.google_callback', _external=True)
+#     return google.authorize_redirect(redirect_uri)
+
 @auth.get('/login')
 @error_handler()
-def login() : 
-    google = oauth.create_client('google')  # create the google oauth client
-    redirect_uri = url_for('auth.google_callback', _external=True)
-    return google.authorize_redirect(redirect_uri)
+def login() :
+    google_id  =request.json.get('google_id')
+    response = jsonify({'msg':'login success'})
+    access_token = create_access_token(identity=google_id) #* will get infos from googleid
+    set_access_cookies(response,access_token)
+    return response
 
 
 @auth.post('/logout')

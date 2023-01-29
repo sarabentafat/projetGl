@@ -2,7 +2,6 @@ import React from "react";
 import Card from "../components/Card";
 import LeftSideBar from "../components/LeftSideBar";
 import Nav from "../components/Nav";
-import love from "../assets/love.png";
 
 function Favorites() {
   return (
