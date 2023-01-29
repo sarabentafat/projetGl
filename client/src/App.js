@@ -9,6 +9,7 @@ import MesAnnonces from "./pages/MesAnnonces";
 // import Map from "./pages/Map";
 import { Context } from "./context/Context";
 import LoginSuccess from "./pages/LoginSuccess";
+import Map from "./pages/Map";
 
 function App() {
   const { user } = useContext(Context);

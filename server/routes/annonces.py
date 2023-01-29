@@ -12,6 +12,7 @@ annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
 @annonces.post('/')
 @error_handler()
 @jwt_required()
+@error_handler()
 def add_annonce():
   pers_id = get_jwt_identity()  #* add of the current user
   # pers_id = '111741026364914091469'  #* add of the current user
