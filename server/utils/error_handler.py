@@ -8,7 +8,6 @@ def error_handler() -> object:
                 return f(*args, **kwargs)
             # handle different types of errors and return messages accordingly with status code
             except Exception as e:
-                print(e)
                 if isinstance(e, ValueError):
                     return jsonify({'message': e.args[0], 'type': 'ValueError'}), 400
                 elif isinstance(e, AttributeError):

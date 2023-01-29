@@ -34,21 +34,12 @@ def register():
     return google.authorize_redirect(redirect_uri)
 
 
-# @auth.get('/login')
-# @error_handler()
-# def login() : 
-#     google = oauth.create_client('google')  # create the google oauth client
-#     redirect_uri = url_for('auth.google_callback', _external=True)
-#     return google.authorize_redirect(redirect_uri)
-
 @auth.get('/login')
 @error_handler()
-def login() :
-    google_id  =request.json.get('google_id')
-    response = jsonify({'msg':'login success'})
-    access_token = create_access_token(identity=google_id) #* will get infos from googleid
-    set_access_cookies(response,access_token)
-    return response
+def login() : 
+    google = oauth.create_client('google')  # create the google oauth client
+    redirect_uri = url_for('auth.google_callback', _external=True)
+    return google.authorize_redirect(redirect_uri)
 
 
 @auth.post('/logout')
@@ -113,9 +104,10 @@ def google_callback() :
         prenom = user_info['given_name']
         email = user_info['email']
         tel ='0565856897'  #random val
+        adresse= 154 #random val
         isadmin= False
     
-        new_user = Personnes(id=id,  nom=nom,prenom=prenom, email=email,tel=tel,isadmin=isadmin)
+        new_user = Personnes(id=id,  nom=nom,prenom=prenom, email=email,tel=tel,adresse=adresse,isadmin=isadmin)
         db.session.add(new_user)
         db.session.commit()
 

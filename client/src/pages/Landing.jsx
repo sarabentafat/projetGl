@@ -9,7 +9,7 @@ import ellipse from "../assets/ellipse.png";
 // text-3xl font-bold underline
 // `;
 function Landing() {
-  const googleLoginUrl = "http://localhost:5000/auth/register";
+  const googleLoginUrl = "http://localhost:5000/auth/login";
 
   const redirectToGoogleSSO = async () => {
     window.open(googleLoginUrl, "_self"); // new tab in the current one
