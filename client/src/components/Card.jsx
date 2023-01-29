@@ -26,7 +26,7 @@ function Card() {
             aria-expanded="false"
             aria-controls="collapseExample"
           >
-            <div className="font-bold">{/* => details */}</div>
+            <div className="font-bold"> = details</div>
           </a>
         </p>
 

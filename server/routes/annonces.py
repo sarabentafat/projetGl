@@ -215,3 +215,34 @@ def delete_comment(annonce_id,comment_id):
   db.session.commit()
 
   return comment_schema.jsonify(comment)
+
+
+
+@annonces.get('/search')
+@error_handler()
+@jwt_required()
+def search_annonces(search_terms): 
+  if (search_terms) : 
+    annonces = Annonces.query.filter(Annonces.titre.contains(search_terms)|Annonces.description.contains(search_terms))
+  else : 
+    annonces = Annonces.query.all()
+  
+    result = annonces_schema.dump(annonces)
+    return jsonify(result)
+
+
+"""
+def search_annonces(search_terms):
+   search_query = or_(Annonces.titre.like("%" + ' '.join(search_terms) + "%"), Annonces.description.like("%" + ' '.join(search_terms) + "%"))
+    annonces = Annonces.query.filter(search_query).all()
+    
+    
+    return annonces_schema.dump(annonces)
+
+def search_annonces(search_terms):
+    search_query = or_(Annonces.titre.like("%" + term + "%") for term in search_terms)
+    search_query = or_(search_query, (Annonces.description.like("%" + term + "%")))
+    annonces = Annonces.query.filter(search_query).all()
+    result = annonces_schema.dump(annonces)
+    return jsonify(result)
+"""
