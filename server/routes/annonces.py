@@ -8,13 +8,14 @@ from utils.errors import InvalidParamsError
 annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
 
 @annonces.post('/')
-@jwt_required()
 @error_handler()
+@jwt_required()
 def add_annonce():
   pers_id = get_jwt_identity()  #* add of the current user
+  # pers_id = '111741026364914091469'  #* add of the current user
   theme = request.json.get('theme', '')
   description = request.json.get('decription', '')
-  tarif = request.json.get('tarif', '')
+  tarif = request.json.get('tarif', 0)
   modalite = request.json.get('modalite', '')
   categorie = request.json.get('categorie', '')
   adresse= request.json.get('adresse', '')
