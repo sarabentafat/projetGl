@@ -8,7 +8,7 @@ from routes.admin import admin
 from routes.annonces import annonces
 from routes.auth import auth,oauth
 from routes.favorites import favorites
-from config import DevConfig
+from config import DevConfig,Config
 
 
 
@@ -26,7 +26,7 @@ ma.init_app(app)
 db.init_app(app=app)
 
 migrate = Migrate(app, db)
-CORS(app)
+CORS(app,origins=['http://localhost:3000',Config.WEBSITE_URL],methods=['GET','PUT','DELETE','POST'],supports_credentials=True)
 
 
 if __name__ == "__main__":

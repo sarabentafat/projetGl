@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useNavigate } from "react";
 import { createContext, useReducer, useState } from "react";
 import Reducer from "./Reducer";
+import ActionsTypes from "./ActionsTypes";
+import ENDPOINTS from "../api/endPoints";
+import axios from "../api/Axios";
 
 const INITIAL_STATE = {
   user: JSON.parse(localStorage.getItem("user")) || null,
@@ -19,8 +22,10 @@ export const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, INITIAL_STATE);
   useEffect(() => {
     console.log("Context");
+    console.log("user", state.user);
     localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
+
   return (
     <Context.Provider
       value={{

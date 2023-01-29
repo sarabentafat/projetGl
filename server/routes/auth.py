@@ -57,7 +57,9 @@ def logout() :
 def get_profile() :
     user_id = get_jwt_identity() #* search for user in db
     user = Personnes.query.get(user_id)
+    print(user_schema.jsonify(user))
     return user_schema.jsonify(user)
+
 
 @auth.put('/profile')
 @error_handler()
@@ -93,7 +95,7 @@ def google_callback() :
     user_exists = Personnes.query.get(user_info['id'])
 
     if user_exists != None :
-        response = make_response(redirect(Config.WEBSITE_URL))
+        response = make_response(redirect(Config.WEBSITE_URL + 'success'))
         access_token = create_access_token(identity=user_exists.id) #* will get infos from googleid
         set_access_cookies(response, access_token)
         return response
@@ -111,7 +113,7 @@ def google_callback() :
         db.session.add(new_user)
         db.session.commit()
 
-        response = make_response(redirect(Config.WEBSITE_URL))
+        response = make_response(redirect(Config.WEBSITE_URL + 'success'))
         access_token = create_access_token(identity=new_user.id) #* will get infos from googleid
         set_access_cookies(response, access_token)
         return response
