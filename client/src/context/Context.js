@@ -1,9 +1,6 @@
-import { useEffect, useNavigate } from "react";
+import { useEffect } from "react";
 import { createContext, useReducer, useState } from "react";
 import Reducer from "./Reducer";
-import ActionsTypes from "./ActionsTypes";
-import ENDPOINTS from "../api/endPoints";
-import axios from "../api/Axios";
 
 const INITIAL_STATE = {
   user: JSON.parse(localStorage.getItem("user")) || null,
