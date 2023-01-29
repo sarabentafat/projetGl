@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token,set_access_cookies,unset_jwt_
 from config import Config
 from authlib.integrations.flask_client import OAuth
 from config import Config 
+from utils.error_handler import error_handler
 
 # oAuth Setup
 oauth= OAuth()
@@ -18,7 +19,7 @@ google = oauth.register(
     api_base_url='https://www.googleapis.com/oauth2/v1/',
     userinfo_endpoint='https://openidconnect.googleapis.com/v1/userinfo',  # This is only needed if using openId to fetch user info
     
-    client_kwargs={'scope': 'email profile https://www.googleapis.com/auth/user.phonenumbers.read'},
+    client_kwargs={'scope': 'email profile'},
 )
 
 
@@ -26,6 +27,7 @@ google = oauth.register(
 auth = Blueprint('auth',__name__,url_prefix='/auth')
 
 @auth.get('/register') 
+@error_handler()
 def register():
     google = oauth.create_client('google')  # create the google oauth client
     redirect_uri = url_for('auth.google_callback', _external=True)
@@ -33,6 +35,7 @@ def register():
 
 
 @auth.get('/login')
+@error_handler()
 def login() : 
     google = oauth.create_client('google')  # create the google oauth client
     redirect_uri = url_for('auth.google_callback', _external=True)
@@ -40,13 +43,16 @@ def login() :
 
 
 @auth.post('/logout')
+@error_handler()
+@jwt_required()
 def logout() : 
-    response = jsonify({"msg": "logout successful"})
+    response = make_response(redirect(Config.WEBSITE_URL))
     unset_jwt_cookies(response)
     return response
 
 
 @auth.get('/profile') 
+@error_handler()
 @jwt_required()
 def get_profile() :
     user_id = get_jwt_identity() #* search for user in db
@@ -54,6 +60,7 @@ def get_profile() :
     return user_schema.jsonify(user)
 
 @auth.put('/profile')
+@error_handler()
 @jwt_required()
 def update_profile() :
   user_id = get_jwt_identity()
@@ -73,44 +80,39 @@ def update_profile() :
 
 
 @auth.get('/google/callback') 
+@error_handler()
 def google_callback() :
-    try :
-        google = oauth.create_client('google')  # create the google oauth client
-        token = google.authorize_access_token()  # Access token from google (needed to get user info)
-        resp = google.get('userinfo')  # userinfo contains stuff u specificed in the scrope
-        user_info = resp.json()
-        res = google.get('https://people.googleapis.com/v1/people/me?personFields=phoneNumbers')
-        user_phone = res.json()
-        print(user_info)
+    google = oauth.create_client('google')  # create the google oauth client
+    token = google.authorize_access_token()  # Access token from google (needed to get user info)
+    resp = google.get('userinfo')  # userinfo contains stuff u specificed in the scrope
+    user_info = resp.json()
+    res = google.get('https://people.googleapis.com/v1/people/me?personFields=phoneNumbers')
+    user_phone = res.json()
+    # print(user_info)
 
-        user_exists = Personnes.query.get(user_info['id'])
+    user_exists = Personnes.query.get(user_info['id'])
 
-        if user_exists != None :
-            response = make_response(redirect(Config.WEBSITE_URL))
-            access_token = create_access_token(identity=user_exists.id) #* will get infos from googleid
-            set_access_cookies(response, access_token)
-            return response
+    if user_exists != None :
+        response = make_response(redirect(Config.WEBSITE_URL))
+        access_token = create_access_token(identity=user_exists.id) #* will get infos from googleid
+        set_access_cookies(response, access_token)
+        return response
 
-        else :
-            id = user_info['id']  # googleId
-            nom = user_info['family_name']
-            prenom = user_info['given_name']
-            email = user_info['email']
-            tel ='0565856897'  #random val
-            adresse= 154 #random val
-            isadmin= False
-        
-            new_user = Personnes(id=id,  nom=nom,prenom=prenom, email=email,tel=tel,adresse=adresse,isadmin=isadmin)
-            db.session.add(new_user)
-            db.session.commit()
+    else :
+        id = user_info['id']  # googleId
+        nom = user_info['family_name']
+        prenom = user_info['given_name']
+        email = user_info['email']
+        tel ='0565856897'  #random val
+        adresse= 154 #random val
+        isadmin= False
+    
+        new_user = Personnes(id=id,  nom=nom,prenom=prenom, email=email,tel=tel,adresse=adresse,isadmin=isadmin)
+        db.session.add(new_user)
+        db.session.commit()
 
-            response = make_response(redirect(Config.WEBSITE_URL))
-            access_token = create_access_token(identity=new_user.id) #* will get infos from googleid
-            set_access_cookies(response, access_token)
-            return response
-            # return response
-            # return user_schema.jsonify(new_user)
+        response = make_response(redirect(Config.WEBSITE_URL))
+        access_token = create_access_token(identity=new_user.id) #* will get infos from googleid
+        set_access_cookies(response, access_token)
+        return response
 
-    except Exception as e :
-        print(e)
-        return f'An error accured {e}',401
