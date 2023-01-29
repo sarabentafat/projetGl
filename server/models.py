@@ -56,8 +56,10 @@ class Comments(db.Model):
   date_created = db.Column(db.DateTime,default=datetime.utcnow)
   author = db.Column(db.String(100) , db.ForeignKey('personnes.id'), nullable=False)
   post_id = db.Column(db.Integer , db.ForeignKey('annonces.annonce_id'), nullable=False)
-  def __init__(self,text):
+  def __init__(self,text,author,post_id):
         self.text=text
+        self.author = author
+        self.post_id = post_id
 
 
 class Adresse(db.Model):
@@ -118,27 +120,30 @@ class Photos(db.Model):
     photo = db.Column("photo",db.String)
     post = db.Column(db.Integer, db.ForeignKey('annonces.annonce_id'),nullable=False)
 
-    def __init__(self,photo):
+    def __init__(self,photo,post):
         self.photo=photo
+        self.post = post
 
 
 
 #-------------------------------------database schemas-----------
         
 class CommentSchema(ma.SQLAlchemyAutoSchema):
-  model = Comments
-  include_relationships = True
-  sqla_session = db.session
-  include_fk = True
+  class Meta :
+    model = Comments
+    include_relationships = True
+    sqla_session = db.session
+    include_fk = True
 comment_schema = CommentSchema()
-Comments_schema = CommentSchema(many=True)
+comments_schema = CommentSchema(many=True)
 
 
 class AdresseSchema(ma.SQLAlchemyAutoSchema):
-  model= Adresse
-  include_relationships = True
-  sqla_session = db.session
-  include_fk = True
+  class Meta : 
+    model= Adresse
+    include_relationships = True
+    sqla_session = db.session
+    include_fk = True
 adresse_schema = AdresseSchema()
 
 
@@ -150,7 +155,9 @@ class PhotoSchema(ma.SQLAlchemyAutoSchema):
     include_fk = True
 photo_schema = PhotoSchema()
 photos_schema = PhotoSchema(many=True)
+
 class AnnonceSchema(ma.SQLAlchemyAutoSchema):
+  photos  = ma.Nested(PhotoSchema,many=True)
   class Meta:
     model=Annonces
     load_instance = True
@@ -171,9 +178,12 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 class FavoriteSchema(ma.SQLAlchemyAutoSchema):
+    # personne_favorites = ma.Nested(UserSchema)
+    annonce_favorites = ma.Nested(AnnonceSchema)
     class Meta:
         model = Favorites
         include_relationships = True
+        sqla_session = db.session
         load_instance = True
 
 favorite_schema = FavoriteSchema()

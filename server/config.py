@@ -10,6 +10,8 @@ class Config:
     GOOGLE_CLINET_SECRET = config('GOOGLE_CLINET_SECRET')
     WEBSITE_URL = config('WEBSITE_URL')
     JWT_COOKIE_CSRF_PROTECT = False
+    UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__),'static')
+    BACKEND_URL = config('BACKEND_URL')
     # JWT_SESSION_COOKIE = False
     # JWT_ACCESS_TOKEN_EXPIRES = config('JWT_ACCESS_TOKEN_EXPIRES')
 

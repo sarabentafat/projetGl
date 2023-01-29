@@ -1,5 +1,5 @@
 from flask import Blueprint ,request,jsonify
-from models import annonce_schema,Annonces,annonces_schema,db,Favorites,favorite_schema
+from models import db,Favorites,favorite_schema,favorites_schema
 from flask_jwt_extended import jwt_required,get_jwt_identity
 from utils.error_handler import error_handler
 from utils.errors import InvalidParamsError
@@ -14,7 +14,7 @@ favorites = Blueprint('favorites',__name__,url_prefix='/favorites')
 def get_my_favorites():
   user_id = get_jwt_identity()
   favorite_annonces=  Favorites.query.filter_by(user_id=user_id).all()
-  result = annonces_schema.dump(favorite_annonces)
+  result = favorites_schema.dump(favorite_annonces)
   return jsonify(result)
 
 

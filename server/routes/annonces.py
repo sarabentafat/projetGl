@@ -1,9 +1,11 @@
+import os
 from flask import Blueprint ,request,jsonify
-from models import annonce_schema,Annonces,annonces_schema,db
+from models import annonce_schema,Annonces,annonces_schema,db,Comments,comments_schema,comment_schema,Photos,photo_schema,photos_schema
 from flask_jwt_extended import jwt_required,get_jwt_identity
 from utils.error_handler import error_handler
 from utils.errors import InvalidParamsError
-
+from utils.upload_media import allowed_file,secure_filename,UPLOAD_FOLDER
+from config import Config
 
 annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
 
@@ -14,7 +16,7 @@ def add_annonce():
   pers_id = get_jwt_identity()  #* add of the current user
   # pers_id = '111741026364914091469'  #* add of the current user
   theme = request.json.get('theme', '')
-  description = request.json.get('decription', '')
+  description = request.json.get('description', '')
   tarif = request.json.get('tarif', 0)
   modalite = request.json.get('modalite', '')
   categorie = request.json.get('categorie', '')
@@ -30,6 +32,39 @@ def add_annonce():
   db.session.commit()
 
   return annonce_schema.jsonify(new_annonce)
+
+#! upload phots
+@annonces.post('/<annonce_id>/media')  #* we add her annonce_id maybe
+@error_handler()
+@jwt_required()
+def upload_media(annonce_id):
+
+  annonce =Annonces.query.get(annonce_id)
+  if annonce == None :
+    raise InvalidParamsError(f'Annonce  with id : {annonce_id} not found')
+
+  # print(request.files)
+  if 'file' not in request.files:
+    raise InvalidParamsError(f"files not found")
+  
+  files = request.files.getlist("file")
+  for file in  files:
+    if file.filename == '' :
+      raise InvalidParamsError(f'No file selected')
+    
+    if file and allowed_file(file.filename) :
+      filename = secure_filename(file.filename)
+      file.save(os.path.join(UPLOAD_FOLDER,filename))
+      photo_url = os.path.join(Config.BACKEND_URL,'static',filename)   #* can be changed
+      # print(photo_url)
+      photo = Photos(photo=photo_url,post=annonce_id)
+      db.session.add(photo)
+      db.session.commit()
+    
+  
+  return jsonify({'msg':"saved successfuly"})
+
+
 
 
 #get all annonces
@@ -118,3 +153,64 @@ def delete_annonce(annonce_id):
 
 
 #todo : add new comment for specific post
+@annonces.post('/<annonce_id>/comments')
+@error_handler()
+@jwt_required()
+def add_comment(annonce_id):
+  user_id = get_jwt_identity()
+  annonce =Annonces.query.get(annonce_id)
+
+  if annonce == None :
+    raise InvalidParamsError(f'Annonce  with id : {annonce_id} not found')
+
+  text = request.json.get('text','')
+
+  if text == '' :
+    raise InvalidParamsError('You must pass text with comment')
+
+  new_comment = Comments(text=text,author=user_id,post_id=annonce_id)
+
+  db.session.add(new_comment)
+  db.session.commit()
+
+  return comment_schema.jsonify(new_comment)
+
+@annonces.get('/<annonce_id>/comments')
+@error_handler()
+@jwt_required()
+def get_all_comments(annonce_id):
+  user_id = get_jwt_identity()
+  annonce =Annonces.query.get(annonce_id)
+
+  if annonce == None :
+    raise InvalidParamsError(f'Annonce  with id : {annonce_id} not found')
+
+
+  commments = Comments.query.filter_by(post_id=annonce_id).all()
+  print(commments)
+
+  result = comments_schema.dump(commments)
+  return result
+
+
+@annonces.delete('/<annonce_id>/comments/<comment_id>')
+@error_handler()
+@jwt_required()
+def delete_comment(annonce_id,comment_id):
+  user_id = get_jwt_identity()
+  annonce =Annonces.query.get(annonce_id)
+
+  if annonce == None :
+    raise InvalidParamsError(f'Annonce  with id : {annonce_id} not found')
+
+  comment = Comments.query.get(comment_id)
+  if comment == None :
+    raise InvalidParamsError(f'Comment  with id : {comment_id} not found')
+
+  if comment.author != user_id :
+    raise InvalidParamsError(f'you can\'nt delete this comment you are not the author')
+
+  db.session.delete(comment)
+  db.session.commit()
+
+  return comment_schema.jsonify(comment)
