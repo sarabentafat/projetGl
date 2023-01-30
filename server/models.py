@@ -158,6 +158,7 @@ photos_schema = PhotoSchema(many=True)
 
 class AnnonceSchema(ma.SQLAlchemyAutoSchema):
   photos  = ma.Nested(PhotoSchema,many=True)
+  adresse_annonce = ma.Nested(AdresseSchema)
   class Meta:
     model=Annonces
     load_instance = True

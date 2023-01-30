@@ -26,10 +26,10 @@ function App() {
   };
 
   const NotRequireAuth = (Element) => {
-    if (!user) {
-      return <Element />;
-    } else {
+    if (user) {
       return <Navigate to="/home" />;
+    } else {
+      return <Element />;
     }
   };
 

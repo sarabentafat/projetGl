@@ -1,6 +1,6 @@
 import os
 from flask import Blueprint ,request,jsonify
-from models import annonce_schema,Annonces,annonces_schema,db,Comments,comments_schema,comment_schema,Photos,photo_schema,photos_schema
+from models import annonce_schema,Annonces,annonces_schema,db,Comments,comments_schema,comment_schema,Photos,photo_schema,photos_schema,Adresse
 from flask_jwt_extended import jwt_required,get_jwt_identity
 from utils.error_handler import error_handler
 from utils.errors import InvalidParamsError
@@ -21,13 +21,21 @@ def add_annonce():
   tarif = request.json.get('tarif', 0)
   modalite = request.json.get('modalite', '')
   categorie = request.json.get('categorie', '')
-  adresse= request.json.get('adresse', '')
+  wilaya= request.json.get('wilaya', False)
+  commune= request.json.get('commune', False)
   titre= request.json.get('titre', '')
 
-  if pers_id== None or theme== None or description== None or tarif== None or modalite== None or categorie== None or  titre== None :
+  if pers_id== None or theme== None or description== None or tarif== None or modalite== None or categorie== None or  titre== None or not wilaya or not commune :
     raise InvalidParamsError()
 
-  new_annonce = Annonces(titre=titre,theme=theme, description=description, tarif=tarif,modalite=modalite,categorie=categorie,adresse=adresse,pers_id=pers_id)
+  adresse = Adresse.query.filter_by(commune = commune,wilaya= wilaya).first()
+
+  if not adresse :  # if adresse not found create new one
+    adresse = Adresse(wilaya=wilaya,commune=commune,lieuExact='') # we don't have lien exact
+    db.session.add(adresse)
+    db.session.commit()
+
+  new_annonce = Annonces(titre=titre,theme=theme, description=description, tarif=tarif,modalite=modalite,categorie=categorie,adresse=adresse.id,pers_id=pers_id)
 
   db.session.add(new_annonce)
   db.session.commit()
@@ -64,18 +72,6 @@ def upload_media(annonce_id):
     
   
   return jsonify({'msg':"saved successfuly"})
-
-
-
-
-#get all annonces
-@annonces.get('/')
-@error_handler()
-@jwt_required()
-def get_annonces():
-  all_annonces = Annonces.query.all()
-  result = annonces_schema.dump(all_annonces)
-  return jsonify(result)
 
 
 #get annonce by id
@@ -218,17 +214,17 @@ def delete_comment(annonce_id,comment_id):
 
 
 
-@annonces.get('/search')
-@error_handler()
-@jwt_required()
-def search_annonces(search_terms): 
-  if (search_terms) : 
-    annonces = Annonces.query.filter(Annonces.titre.contains(search_terms)|Annonces.description.contains(search_terms))
-  else : 
-    annonces = Annonces.query.all()
+# @annonces.get('/search')
+# @error_handler()
+# @jwt_required()
+# def search_annonces(search_terms): 
+#   if (search_terms) : 
+#     annonces = Annonces.query.filter(Annonces.titre.contains(search_terms)|Annonces.description.contains(search_terms))
+#   else : 
+#     annonces = Annonces.query.all()
   
-    result = annonces_schema.dump(annonces)
-    return jsonify(result)
+#     result = annonces_schema.dump(annonces)
+#     return jsonify(result)
 
 
 """
@@ -246,3 +242,75 @@ def search_annonces(search_terms):
     result = annonces_schema.dump(annonces)
     return jsonify(result)
 """
+
+
+@annonces.get('/')
+@error_handler()
+@jwt_required()
+def get_annonces(): 
+    mots_cles = request.args.get('mots_cles',False)
+    module = request.args.get('module',False)
+    wilaya = request.args.get('wilaya',False)
+    commune = request.args.get('commune',False)
+    date_debut = request.args.get('date_debut',False)
+    date_fin = request.args.get('date_fin',False)
+    # print('-'*100)
+    # print(mots_cles)
+    # print(module)
+    # print(wilaya)
+    # print(commune)
+    # print(date_debut)
+    # print(date_fin)
+    # print('-'*100)
+
+    query = Annonces.query.order_by(Annonces.date_posted.desc())
+
+    if mots_cles :
+      mots_cles = mots_cles.split(' ')
+      for mot_cle in mots_cles :
+          query = query.filter(Annonces.titre.like(f'%{mot_cle}%') | Annonces.description.like(f'%{mot_cle}%'))
+          
+    if module:
+      query = query.filter(Annonces.theme.like(f'%{module}%')) # module in our db is theme
+      # query = query.filter_by(theme=module)   # our fild of theme is not enum
+
+    if wilaya and not commune:
+      adresse = Adresse.query.filter_by(wilaya=wilaya).first()
+      print('-'*100)
+      print(adresse)
+      if adresse != None :
+        adresseId = adresse.id
+        query = query.filter_by(adresse=adresseId)
+
+
+    if commune:
+      adresse = Adresse.query.filter_by(commune=commune).first()
+      print('-'*100)
+      print(adresse)
+      if adresse != None :
+        adresseId = adresse.id
+        query = query.filter_by(adresse=adresseId)
+
+
+    # if date_debut and date_fin:
+    #     query = query.filter(Annonces.date_posted.between(date_debut, date_fin))
+
+    if date_debut: 
+            query = query.filter(Annonces.date_posted >= date_debut)
+
+    if date_fin:
+        query = query.filter(Annonces.date_posted <= date_fin)
+
+    annonces = query.all()
+
+    result = annonces_schema.dump(annonces)
+    return jsonify(result)
+
+    # datetime.datetime.strptime(date_fin, '%Y-%m-%d')
+
+
+
+# def get_annonces():
+#   all_annonces = Annonces.query.all()
+#   result = annonces_schema.dump(all_annonces)
+#   return jsonify(result)

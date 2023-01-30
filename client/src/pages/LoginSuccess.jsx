@@ -29,9 +29,13 @@ function LoginSuccess() {
 
     setTimeout(() => {
       getProfile();
-    }, 1000);
+    }, 3000);
   }, []);
-  return <div>LoginSuccess</div>;
+  return (
+    <div>
+      <h1>LoginSuccess</h1>
+    </div>
+  );
 }
 
 export default LoginSuccess;
