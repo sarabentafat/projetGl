@@ -27,7 +27,11 @@ function Home() {
         <LeftSideBar />
         {/* todo :   create cards component wich contain list of card(annonce)  */}
         {annonces ? (
-          <Card annonces={annonces} />
+          <div className="flex flex-col space-y-10">
+            {annonces.map((annonce) => (
+              <Card annonce={annonce} />
+            ))}
+          </div>
         ) : (
           <h2>Il n'y a pas d'annonces à afficher.</h2>
         )}
