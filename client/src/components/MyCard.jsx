@@ -62,7 +62,9 @@ function Card() {
           <button className="border p-1 border-blue-500 text-blue-500 rounded-lg w-[50%] mr-1">
             Ajouter aux favoris
           </button>
-
+          <button className="border p-1 bg-blue-500 text-white rounded-lg w-[50%] mr-1">
+           suprimmer l'annonce
+          </button>
         </div>
       </div>
     </div>
