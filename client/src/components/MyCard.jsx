@@ -14,7 +14,7 @@ function MyCard({ annonce, inFav, favId }) {
     <div className="md:flex sm:ml-4">
       <Link>
         <img
-          src={annonce.photos ? annonce.photos[0].photo : cardPic}
+          src={annonce.photos.length > 0 ? annonce.photos[0].photo : cardPic}
           className=" pr-3  md:w-full md:h-full sm:h-[40%]  sm:w-[90%] sm:ml-2"
           alt="annonce "
         />

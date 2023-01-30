@@ -43,8 +43,24 @@ function AddAnnonce() {
           "Content-Type": "multipart/form-data",
         }
       );
-
-      window.alert("Annonce Added Succ");
+      setImages([]);
+      settitle("");
+      setdescription("");
+      setcategorie("");
+      setmodalite("");
+      settarif("");
+      settheme("");
+      setwilaya("");
+      setcommune("");
+      titleRef.current.value = "";
+      descriptionRef.current.value = "";
+      categorieRef.current.value = "";
+      modaliteRef.current.value = "";
+      tarifRef.current.value = "";
+      themeRef.current.value = "";
+      wilayaRef.current.value = "";
+      communeRef.current.value = "";
+      window.alert("----------Annonce Added Succ----------------");
     } catch (err) {
       window.alert(err);
     }
@@ -69,7 +85,8 @@ function AddAnnonce() {
       tarif &&
       theme &&
       wilaya &&
-      commune
+      commune &&
+      images.length > 0
     ) {
       try {
         setData();
@@ -93,7 +110,7 @@ function AddAnnonce() {
         console.log(err);
       }
     } else {
-      window.alert("Please enter all fields");
+      window.alert("Please enter all fields and add image");
     }
   };
   return (
@@ -156,13 +173,13 @@ function AddAnnonce() {
               <select
                 name="annonce"
                 className="          
-           w-full
-            cursor-pointer
-            text-gray-700
-            border-b-2 border-gray-100
-           py-2
-            transition
-            ease-in-out
+                w-full
+                  cursor-pointer
+                  text-gray-700
+                  border-b-2 border-gray-100
+                py-2
+                  transition
+                  ease-in-out
                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mb-2"
                 id="catégorie"
                 ref={categorieRef}
