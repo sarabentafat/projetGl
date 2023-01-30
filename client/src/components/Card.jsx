@@ -24,7 +24,7 @@ function Card({ annonce, inFav, favId }) {
 
   return (
     <div className="md:flex sm:ml-4">
-      <Link to="/profile">
+      <Link>
         <img
           src={annonce.photos ? annonce.photos[0].photo : cardPic}
           className=" pr-3 md:w-full md:h-full sm:h-[40%]  sm:w-[90%] sm:ml-2"

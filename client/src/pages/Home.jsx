@@ -1,23 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Card from "../components/Card";
 import LeftSideBar from "../components/LeftSideBar";
 import Nav from "../components/Nav";
 import axios from "../api/Axios";
 import ENDPOINTS from "../api/endPoints";
+import { Context } from "../context/Context";
 
 function Home() {
+  const { searchKey } = useContext(Context);
   const [annonces, setAnnonces] = useState([]);
   useEffect(() => {
     const fetchAnnonces = async () => {
       try {
-        const response = await axios.get(ENDPOINTS.ANNONCES);
+        const response = await axios.get(ENDPOINTS.ANNONCES, {
+          params: {
+            mots_cles: searchKey,
+          },
+        });
+        console.log(searchKey);
         setAnnonces(response.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchAnnonces();
-  }, []);
+  }, [searchKey]);
 
   console.log(annonces);
   return (

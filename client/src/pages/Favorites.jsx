@@ -7,14 +7,12 @@ import ENDPOINTS from "../api/endPoints";
 
 function Favorites() {
   const [myFavorites, setMyFavorites] = useState([]);
-  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchAnnonces = async () => {
       try {
         const response = await axios.get(ENDPOINTS.FAVORITES);
         setMyFavorites(response.data);
-        console.log(myFavorites, "hhh");
       } catch (err) {
         console.log(err);
       }
@@ -22,6 +20,7 @@ function Favorites() {
 
     fetchAnnonces();
   }, []);
+  console.log(myFavorites, "hhh");
   return (
     <div className="p-4 mx-10 sm:mx-1  md:text-sm  ">
       <Nav />
@@ -37,7 +36,6 @@ function Favorites() {
                   annonce={annonce.annonce_favorites}
                   inFav={true}
                   favId={annonce.idFav}
-                  setReload={setReload}
                 />
               ))}
             </div>

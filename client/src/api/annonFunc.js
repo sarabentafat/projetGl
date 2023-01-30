@@ -11,6 +11,17 @@ const addToFav = async (annonce_id) => {
   }
 };
 
+const deleteAnnonce = async (annonce_id) => {
+  try {
+    const response = await axios.delete(ENDPOINTS.ANNONCES + annonce_id);
+    if (response.data) {
+      window.alert("Added deleted secc");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const removeFromFav = async (favId) => {
   try {
     const response = await axios.delete(ENDPOINTS.FAVORITES + favId);
@@ -42,4 +53,5 @@ export default {
   addToFav,
   removeFromFav,
   addComment,
+  deleteAnnonce,
 };

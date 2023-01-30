@@ -54,7 +54,7 @@ def login2() :
 @error_handler()
 @jwt_required()
 def logout() : 
-    response = make_response(redirect(Config.WEBSITE_URL))
+    response = make_response(jsonify({'msg':'log out succ'}))
     unset_jwt_cookies(response)
     return response
 

@@ -13,8 +13,7 @@ export const Context = createContext(INITIAL_STATE);
 // context provider to reach user states
 
 export const ContextProvider = ({ children }) => {
-  const [notification, setNotification] = useState([]);
-  const [conversations, setConversations] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
 
   const [state, dispatch] = useReducer(Reducer, INITIAL_STATE);
   useEffect(() => {
@@ -30,10 +29,8 @@ export const ContextProvider = ({ children }) => {
         isFetching: state.isFetching,
         error: state.error,
         dispatch,
-        notification,
-        setNotification,
-        conversations,
-        setConversations,
+        searchKey,
+        setSearchKey,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import home from "../assets/home.png";
 import file from "../assets/file.png";
 import love from "../assets/love.png";
@@ -8,9 +8,28 @@ import addFile from "../assets/addFile.png";
 import selectionner from "../assets/select.png";
 import "tw-elements";
 import { Link } from "react-router-dom";
-
+import ActionsTypes from "../context/ActionsTypes";
+import ENDPOINTS from "../api/endPoints";
+import axios from "../api/Axios";
+import { Context } from "../context/Context";
+import { useNavigate } from "react-router-dom";
 
 function LeftSideBar() {
+  const navigate = useNavigate();
+  const { dispatch } = useContext(Context);
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(ENDPOINTS.LOGOUT);
+      if (response.data) {
+        dispatch({
+          type: ActionsTypes.LOGOUT,
+        });
+        navigate("/", { replace: true });
+      }
+    } catch (err) {
+      window.alert("Error accured");
+    }
+  };
   return (
     <div>
       <div className="md:w-[20%]  md:text-sm sm:text-xs sm:hidden md:block  ">
@@ -39,19 +58,31 @@ function LeftSideBar() {
         </p>
 
         <div class="collapse" id="collapseExample">
-              <div class=" p-1">
-                <input type="text" placeholder="module" className="border-b-2 py-1 " />        
-                <input type="text" placeholder="commune" className="border-b-2 py-1 " />
-                <input type="text" placeholder="wilaya" className="border-b-2 py-1 text-gray-700"  />
-                <div className="flex   mb-3  border-b-2 border-gray-400   sm:w-[177px] my-1  ">
-                  <div className="text-gray-700 mr-2">depuis </div>
-                  <input type="date" className="" />
-                </div>
-                <div className="flex   mb-3  border-b-2 border-gray-400   sm:w-[177px] ">
-                  <div className="text-gray-700 mr-2">jusqu'a </div>
-                  <input type="date" className="" />
-                </div>
-              </div>
+          <div class=" p-1">
+            <input
+              type="text"
+              placeholder="module"
+              className="border-b-2 py-1 "
+            />
+            <input
+              type="text"
+              placeholder="commune"
+              className="border-b-2 py-1 "
+            />
+            <input
+              type="text"
+              placeholder="wilaya"
+              className="border-b-2 py-1 text-gray-700"
+            />
+            <div className="flex   mb-3  border-b-2 border-gray-400   sm:w-[177px] my-1  ">
+              <div className="text-gray-700 mr-2">depuis </div>
+              <input type="date" className="" />
+            </div>
+            <div className="flex   mb-3  border-b-2 border-gray-400   sm:w-[177px] ">
+              <div className="text-gray-700 mr-2">jusqu'a </div>
+              <input type="date" className="" />
+            </div>
+          </div>
         </div>
 
         <div className="flex sm:w-[200px] ">
@@ -86,8 +117,8 @@ function LeftSideBar() {
         <div className=" flex bottom-12 absolute ">
           <img src={exit} alt="se deconnecter" className="p-1 mr-1" />
 
-          <button className="sm:text-xs">
-            <Link to="/">se deconnecter</Link>
+          <button className="sm:text-xs" onClick={handleLogout}>
+            se deconnecter
           </button>
         </div>
         {/* <Route path='/offre' component={Offre}></Route> */}

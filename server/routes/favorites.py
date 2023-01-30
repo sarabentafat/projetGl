@@ -40,7 +40,7 @@ def delete_favorite(id):
 def add_to_favorites(id):
   annonce_id = id 
   user_id = get_jwt_identity() 
-  favorite_exists = Favorites.query.filter_by(annonce_id= id).first()
+  favorite_exists = Favorites.query.filter_by(annonce_id= annonce_id,user_id=user_id).first()
   if favorite_exists != None :
     raise InvalidParamsError(f"Annonce id : {id} already in favorites")
   
