@@ -157,17 +157,6 @@ class PhotoSchema(ma.SQLAlchemyAutoSchema):
 photo_schema = PhotoSchema()
 photos_schema = PhotoSchema(many=True)
 
-class AnnonceSchema(ma.SQLAlchemyAutoSchema):
-  photos  = ma.Nested(PhotoSchema,many=True)
-  adresse_annonce = ma.Nested(AdresseSchema)
-  class Meta:
-    model=Annonces
-    load_instance = True
-    sqla_session = db.session
-    include_relationships = True
-    include_fk=True
-annonce_schema = AnnonceSchema()
-annonces_schema = AnnonceSchema(many=True)
 class UserSchema(ma.SQLAlchemyAutoSchema):
   class Meta:
     model= Personnes
@@ -179,6 +168,21 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
+
+class AnnonceSchema(ma.SQLAlchemyAutoSchema):
+  photos  = ma.Nested(PhotoSchema,many=True)
+  comments  = ma.Nested(CommentSchema,many=True)
+  adresse_annonce = ma.Nested(AdresseSchema)
+  personne_annonces = ma.Nested(UserSchema)
+  class Meta:
+    model=Annonces
+    load_instance = True
+    sqla_session = db.session
+    include_relationships = True
+    include_fk=True
+annonce_schema = AnnonceSchema()
+annonces_schema = AnnonceSchema(many=True)
+
 class FavoriteSchema(ma.SQLAlchemyAutoSchema):
     # personne_favorites = ma.Nested(UserSchema)
     annonce_favorites = ma.Nested(AnnonceSchema)

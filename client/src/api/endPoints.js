@@ -1,10 +1,13 @@
 const ENDPOINTS = {
   LOGIN: "/auth/login/",
+  LOGOUT: "/auth/logout",
   SIGNUP: "/auth/register/",
   PROFILE: "/auth/profile",
-  ANNONCES: "/annonces",
+  ANNONCES: "/annonces/",
+  MEDIA: "/media/",
   MYANNONCES: "annonces/myannonces",
-  FAVORITES: "favorites",
+  FAVORITES: "/favorites/",
+  COMMENTS: "/comments",
 };
 
 export default ENDPOINTS;

@@ -20,7 +20,7 @@ function Favorites() {
 
     fetchAnnonces();
   }, []);
-
+  console.log(myFavorites, "hhh");
   return (
     <div className="p-4 mx-10 sm:mx-1  md:text-sm  ">
       <Nav />
@@ -28,10 +28,19 @@ function Favorites() {
         <LeftSideBar />
         <div>
           {/* todo :   create cards component wich contain list of card(annonce)  */}
-          {myFavorites ? (
-            <Card annonces={myFavorites} />
+          {myFavorites !== [] ? (
+            <div className="flex flex-col space-y-10">
+              {myFavorites.map((annonce) => (
+                <Card
+                  key={annonce.annonce_favorites.annonce_id}
+                  annonce={annonce.annonce_favorites}
+                  inFav={true}
+                  favId={annonce.idFav}
+                />
+              ))}
+            </div>
           ) : (
-            <h2>Il n'y a pas d'annonces à afficher</h2>
+            <h1 className="">Il n'y a pas d'annonces à afficher</h1>
           )}
         </div>
       </div>

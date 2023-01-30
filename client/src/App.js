@@ -44,7 +44,7 @@ function App() {
           <Route path="/mesfavorites" element={NotRequireAuth(Favorites)} />
           <Route path="/mesannonces" element={NotRequireAuth(MesAnnonces)} />
           <Route path="/success" element={NotRequireAuth(LoginSuccess)} />
-          <Route path="/profile" element={<Profile/>}/> 
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Router>
       {/* <Map

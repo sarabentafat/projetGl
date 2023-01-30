@@ -1,9 +1,101 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import image from "../assets/image.png";
 import LeftSideBar from "../components/LeftSideBar";
 import Nav from "../components/Nav";
+import axios from "../api/Axios";
+import ENDPOINTS from "../api/endPoints";
 
 function AddAnnonce() {
+  const titleRef = useRef();
+  const descriptionRef = useRef();
+  const categorieRef = useRef();
+  const modaliteRef = useRef();
+  const tarifRef = useRef();
+  const themeRef = useRef();
+  const wilayaRef = useRef();
+  const communeRef = useRef();
+  const [title, settitle] = useState("");
+  const [description, setdescription] = useState("");
+  const [categorie, setcategorie] = useState("");
+  const [modalite, setmodalite] = useState("");
+  const [tarif, settarif] = useState("");
+  const [theme, settheme] = useState("");
+  const [wilaya, setwilaya] = useState("");
+  const [commune, setcommune] = useState("");
+  const [images, setImages] = useState([]);
+
+  const handleImages = (e) => {
+    setImages(e.target.files);
+  };
+
+  const uploadImages = async (annonceId) => {
+    try {
+      const formData = new FormData();
+      for (const image of images) {
+        formData.append("file", image);
+      }
+      console.log(formData.keys);
+
+      const reponse = await axios.post(
+        ENDPOINTS.ANNONCES + annonceId + ENDPOINTS.MEDIA,
+        formData,
+        {
+          "Content-Type": "multipart/form-data",
+        }
+      );
+
+      window.alert("Annonce Added Succ");
+    } catch (err) {
+      window.alert(err);
+    }
+  };
+  const setData = () => {
+    settitle(titleRef.current.value);
+    setdescription(descriptionRef.current.value);
+    setcategorie(categorieRef.current.value);
+    setmodalite(modaliteRef.current.value);
+    settarif(tarifRef.current.value);
+    settheme(themeRef.current.value);
+    setwilaya(wilayaRef.current.value);
+    setcommune(communeRef.current.value);
+  };
+  const handleSubmit = async () => {
+    setData();
+    if (
+      title &&
+      description &&
+      categorie &&
+      modalite &&
+      tarif &&
+      theme &&
+      wilaya &&
+      commune
+    ) {
+      try {
+        setData();
+        const data = {
+          theme: theme,
+          description: description,
+          tarif: tarif,
+          modalite: modalite,
+          categorie: categorie,
+          wilaya: wilaya,
+          commune: commune,
+          titre: title,
+        };
+        const response = await axios.post(ENDPOINTS.ANNONCES, data);
+        if (response.data) {
+          console.log(response.data);
+          const annonceId = response.data["annonce_id"];
+          await uploadImages(annonceId);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      window.alert("Please enter all fields");
+    }
+  };
   return (
     <div className="p-4 mx-10 sm:mx-1  md:text-sm sm:text-xs  sm:ml-4 ">
       <Nav />
@@ -18,7 +110,14 @@ function AddAnnonce() {
                 className="p-3 ml-8 sm:w-[50%] "
               />
               <button className="bg-blue-500 text-white rounded-md px-2 ">
-                selectionner des images{" "}
+                <input
+                  type="file"
+                  name="file"
+                  id="myImages"
+                  multiple="multiple"
+                  placeholder=" selectionner des images"
+                  onChange={handleImages}
+                />
               </button>
               <div className="text-gray-500 text-sm ">
                 {" "}
@@ -33,9 +132,10 @@ function AddAnnonce() {
 
             <div class="relative h-11 w-full min-w-[200px] mb-4">
               <input
-              id="titre"
+                id="titre"
                 class="text-black peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:borde-blue-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
+                ref={titleRef}
               />
               <label class=" text-gray-500 after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-blue-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-blue-500 peer-focus:after:scale-x-100 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 titre
@@ -43,9 +143,10 @@ function AddAnnonce() {
             </div>
             <div class="relative h-11 w-full min-w-[200px] mb-4">
               <input
-              id="description"
+                id="description"
                 class="text-black peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:borde-blue-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
+                ref={descriptionRef}
               />
               <label class=" text-gray-500 after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-blue-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-blue-500 peer-focus:after:scale-x-100 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 description
@@ -55,7 +156,6 @@ function AddAnnonce() {
               <select
                 name="annonce"
                 className="          
-                text-gray-700
            w-full
             cursor-pointer
             text-gray-700
@@ -65,6 +165,7 @@ function AddAnnonce() {
             ease-in-out
                focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none mb-2"
                 id="catégorie"
+                ref={categorieRef}
               >
                 <option value="college">collège </option>
                 <option value="lycee">lycée </option>
@@ -85,6 +186,7 @@ function AddAnnonce() {
             ease-in-out
             focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
                 id="modalité"
+                ref={modaliteRef}
               >
                 <option value="online">en ligne </option>
                 <option value="offline">hors ligne </option>
@@ -92,9 +194,10 @@ function AddAnnonce() {
             </label>
             <div class="relative h-11 w-full min-w-[200px] mb-4 mt-2 ">
               <input
-              id="tarif"
+                id="tarif"
                 class=" text-black peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:borde-blue-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
+                ref={tarifRef}
               />
               <label class=" text-gray-500 after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-blue-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-blue-500 peer-focus:after:scale-x-100 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 Tarif
@@ -102,9 +205,10 @@ function AddAnnonce() {
             </div>
             <div class="relative h-11 w-full min-w-[200px] mb-4">
               <input
-              id="theme"
+                id="theme"
                 class="text-black peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:borde-blue-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
+                ref={themeRef}
               />
               <label class=" text-gray-500 after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-blue-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-blue-500 peer-focus:after:scale-x-100 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 Thème
@@ -112,9 +216,10 @@ function AddAnnonce() {
             </div>
             <div class="relative h-11 w-full min-w-[200px] mb-4">
               <input
-              id="wilaya"
+                id="wilaya"
                 class="text-black peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:borde-blue-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
+                ref={wilayaRef}
               />
               <label class=" text-gray-500 after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-blue-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-blue-500 peer-focus:after:scale-x-100 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 Wilaya
@@ -122,17 +227,18 @@ function AddAnnonce() {
             </div>
             <div class="relative h-11 w-full min-w-[200px] mb-4">
               <input
-              id="commune"
+                id="commune"
                 class="text-black peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:borde-blue-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
+                ref={communeRef}
               />
               <label class=" text-gray-500 after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-blue-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-blue-gray-500 peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-blue-500 peer-focus:after:scale-x-100 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-               Commune
+                Commune
               </label>
             </div>
             <div class="relative h-11 w-full min-w-[200px] mb-">
               <input
-              id="bienImmobilier"
+                id="bienImmobilier"
                 class="text-black peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border-blue-gray-200 focus:borde-blue-500 focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeholder=" "
               />
@@ -141,14 +247,17 @@ function AddAnnonce() {
               </label>
             </div>
             <div className="flex justify-center md:mt-10 sm:mt-2 sm:ml-[-20%] sm:w-[80%]">
-              <button id='submit-button' className="bg-blue-500 text-white rounded-md w-[80%] p-1 md:ml-[40%] sm:ml-24">
+              <button
+                id="submit-button"
+                className="bg-blue-500 text-white rounded-md w-[80%] p-1 md:ml-[40%] sm:ml-24"
+                onClick={handleSubmit}
+              >
                 Publier l'annonce
               </button>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   );
 }
