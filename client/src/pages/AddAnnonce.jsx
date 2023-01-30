@@ -94,7 +94,7 @@ function AddAnnonce() {
       <div className="flex">
         <LeftSideBar />
         <div className="md:flex w-full  sm:ml-8 ">
-          <div className="bg-[var(--primary-color)] md:ml-[-150px]  border-2 border-gray-300 border-dashed  md:w-[50%] flex justify-center items-center sm:w-full">
+          <div className="bg-[var(--primary-color)] md:ml-[-100px]  border-2 border-gray-300 border-dashed  md:w-[50%] flex justify-center items-center sm:w-full">
             <div>
               <img
                 src={image}

@@ -10,7 +10,7 @@ function Nav() {
     <div className="flex  justify-between mb-5 ">
       <div className="flex">
         <Link to="/home">
-          <img src={logo} className="w-15 h-8" alt="" />
+          <img src={logo} className="w-15 h-10" alt="" />
         </Link>{" "}
       </div>
       <div className="md:flex w-4 h-4 sm:hidden md:block ">
