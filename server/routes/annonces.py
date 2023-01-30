@@ -14,6 +14,7 @@ annonces = Blueprint('annonces',__name__,url_prefix='/annonces')
 @jwt_required()
 @error_handler()
 def add_annonce():
+  print('*'*100)
   pers_id = get_jwt_identity()  #* add of the current user
   # pers_id = '111741026364914091469'  #* add of the current user
   theme = request.json.get('theme', '')
@@ -43,7 +44,7 @@ def add_annonce():
   return annonce_schema.jsonify(new_annonce)
 
 #! upload phots
-@annonces.post('/<annonce_id>/media')  #* we add her annonce_id maybe
+@annonces.post('/<annonce_id>/media/')  #* we add her annonce_id maybe
 @error_handler()
 @jwt_required()
 def upload_media(annonce_id):
@@ -52,7 +53,7 @@ def upload_media(annonce_id):
   if annonce == None :
     raise InvalidParamsError(f'Annonce  with id : {annonce_id} not found')
 
-  # print(request.files)
+  print(request.files.getlist('file'))
   if 'file' not in request.files:
     raise InvalidParamsError(f"files not found")
   

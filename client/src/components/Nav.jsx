@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import hand from "../assets/hand.png";
 import profilePic from "../assets/profilePic.png";
 import addFile from "../assets/addFile.png";
 import { Link } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import logo from "../assets/logo.png";
+import { Context } from "../context/Context";
 function Nav() {
+  const { user } = useContext(Context);
   return (
     <div className="flex  justify-between mb-5 ">
       <div className="flex">
@@ -15,7 +17,7 @@ function Nav() {
       </div>
       <div className="md:flex w-4 h-4 sm:hidden md:block ">
         <img src={hand} alt="" className="animate-bounce " />
-        <div className="py-2 ml-1">hi!Ouarda</div>
+        <div className="py-2 ml-1">hi! {user.prenom}</div>
       </div>
       <div className="flex ">
         <input
@@ -23,13 +25,18 @@ function Nav() {
           type="text"
           placeholder="Rechercher  "
         />
-        <div className="bg-blue-500 text-white p-2 px-4 rounded-lg rounded-l-none cursor-pointer "><AiOutlineSearch></AiOutlineSearch></div>
+        <div className="bg-blue-500 text-white p-2 px-4 rounded-lg rounded-l-none cursor-pointer ">
+          <AiOutlineSearch></AiOutlineSearch>
+        </div>
       </div>
       <div className="md:flex bg-blue-500 text-white rounded-lg md:px-3 py-1 sm:hidden">
-          <Link to="/addannounce">Ajouter une nouvelle annonce</Link>
+        <Link to="/addannounce">Ajouter une nouvelle annonce</Link>
       </div>
       <div>
-        <Link to='/profile'> <img src={profilePic} alt="profile" /></Link>
+        <Link to="/profile">
+          {" "}
+          <img src={profilePic} alt="profile" />
+        </Link>
       </div>
     </div>
   );

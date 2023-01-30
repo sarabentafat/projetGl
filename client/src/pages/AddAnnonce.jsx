@@ -22,7 +22,33 @@ function AddAnnonce() {
   const [theme, settheme] = useState("");
   const [wilaya, setwilaya] = useState("");
   const [commune, setcommune] = useState("");
+  const [images, setImages] = useState([]);
 
+  const handleImages = (e) => {
+    setImages(e.target.files);
+  };
+
+  const uploadImages = async (annonceId) => {
+    try {
+      const formData = new FormData();
+      for (const image of images) {
+        formData.append("file", image);
+      }
+      console.log(formData.keys);
+
+      const reponse = await axios.post(
+        ENDPOINTS.ANNONCES + annonceId + ENDPOINTS.MEDIA,
+        formData,
+        {
+          "Content-Type": "multipart/form-data",
+        }
+      );
+
+      window.alert("Annonce Added Succ");
+    } catch (err) {
+      window.alert(err);
+    }
+  };
   const setData = () => {
     settitle(titleRef.current.value);
     setdescription(descriptionRef.current.value);
@@ -45,15 +71,6 @@ function AddAnnonce() {
       wilaya &&
       commune
     ) {
-      console.log(
-        title && description,
-        categorie,
-        modalite,
-        tarif,
-        theme,
-        wilaya,
-        commune
-      );
       try {
         setData();
         const data = {
@@ -68,23 +85,14 @@ function AddAnnonce() {
         };
         const response = await axios.post(ENDPOINTS.ANNONCES, data);
         if (response.data) {
-          window.alert("Annonce Added succ");
+          console.log(response.data);
+          const annonceId = response.data["annonce_id"];
+          await uploadImages(annonceId);
         }
       } catch (err) {
         console.log(err);
       }
     } else {
-      console.log(
-        title,
-        description,
-        categorie,
-        modalite,
-        tarif,
-        theme,
-        wilaya,
-        commune,
-        "hh"
-      );
       window.alert("Please enter all fields");
     }
   };
@@ -102,7 +110,14 @@ function AddAnnonce() {
                 className="p-3 ml-8 sm:w-[50%] "
               />
               <button className="bg-blue-500 text-white rounded-md px-2 ">
-                selectionner des images{" "}
+                <input
+                  type="file"
+                  name="file"
+                  id="myImages"
+                  multiple="multiple"
+                  placeholder=" selectionner des images"
+                  onChange={handleImages}
+                />
               </button>
               <div className="text-gray-500 text-sm ">
                 {" "}

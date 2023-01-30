@@ -23,12 +23,14 @@ function MesAnnonces() {
       <Nav />
       <div className="flex justify-between ">
         <LeftSideBar />
-        {/* todo :   create cards component wich contain list of card(annonce)  */}
         {myAnnonces ? (
-          <MyCard annonces={myAnnonces} />
-        
+          <div className="flex flex-col space-y-10">
+            {myAnnonces.map((annonce) => (
+              <MyCard key={annonce.annonce_id} annonce={annonce} />
+            ))}
+          </div>
         ) : (
-          <h2>Il n'y a pas d'annonces à afficher</h2>
+          <h2>Il n'y a pas d'annonces à afficher.</h2>
         )}
       </div>
     </div>

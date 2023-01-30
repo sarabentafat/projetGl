@@ -29,7 +29,7 @@ function Home() {
         {annonces ? (
           <div className="flex flex-col space-y-10">
             {annonces.map((annonce) => (
-              <Card annonce={annonce} />
+              <Card key={annonce.annonce_id} annonce={annonce} />
             ))}
           </div>
         ) : (

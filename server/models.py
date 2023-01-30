@@ -171,6 +171,7 @@ users_schema = UserSchema(many=True)
 
 class AnnonceSchema(ma.SQLAlchemyAutoSchema):
   photos  = ma.Nested(PhotoSchema,many=True)
+  comments  = ma.Nested(CommentSchema,many=True)
   adresse_annonce = ma.Nested(AdresseSchema)
   personne_annonces = ma.Nested(UserSchema)
   class Meta:
