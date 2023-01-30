@@ -148,6 +148,7 @@ function LeftSideBar() {
         </div>
         {/* <Route path='/offre' component={Offre}></Route> */}
       </div>
+      {/* mobile responsive */}
       <div className="sm:block md:hidden sm:w-[20px]  ">
         <Link to="/home">
           <img src={home} className="my-3 w-5" alt="" />

@@ -6,10 +6,9 @@ import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import MesAnnonces from "./pages/MesAnnonces";
-// import Map from "./pages/Map";
 import { Context } from "./context/Context";
 import LoginSuccess from "./pages/LoginSuccess";
-import Map from "./pages/Map";
+// import Map from "./pages/Map";
 
 function App() {
   const { user } = useContext(Context);
