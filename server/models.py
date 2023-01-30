@@ -42,7 +42,8 @@ class Personnes(db.Model):
     comments = db.relationship('Comments',backref='personne_comments',cascade="all,delete")
     favorites = db.relationship('Favorites', backref='personne_favorites',cascade="all,delete")
    
-    def __init__(self,nom,prenom , email,tel,isadmin):
+    def __init__(self,id,nom,prenom , email,tel,isadmin):
+        self.id = id
         self.nom = nom
         self.email=email
         self.prenom=prenom

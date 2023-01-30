@@ -49,11 +49,11 @@ function Card() {
             <div>Numéro de téléphone <span className="text-blue-500" >01255555</span></div>
             <div>email : <span className="text-blue-500" >ouarda@estin.dz</span></div>
             <div>adresse : <span className="text-blue-500">Bejaia</span></div>
-            <button className="border p-1 border-blue-500 text-blue-500 rounded-lg w-full mr-1 mt-2 ">
+            <button className="border p-1 border-blue-500 text-blue-500 rounded-lg w-full mr-1 mt-5 ">
               Ajouter aux favoris
             </button>
           </div>
-          <div className=" ml-16 w-full mt-[-15px]">
+          <div className=" ml-16 w-full mt-[-30px]">
             <input type="text" placeholder="écrire un commantaire" className="border-2 w-[90%] mt-2 py-5 rounded-lg p-4 mx-3 h-[80%]" />
             <button className="  border p-1 bg-blue-500 text-white rounded-lg w-[90%] mr-1 mt-2 ml-2">
               demander une offre
