@@ -38,13 +38,13 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" exact element={NotRequireAuth(Landing)} />
-          <Route path="/offre" exact element={NotRequireAuth(Offre)} />
-          <Route path="/addannounce" exact element={NotRequireAuth(AddAnnonce)} />
-          <Route path="/home" exact element={NotRequireAuth(Home)} />
-          <Route path="/mesfavorites" element={NotRequireAuth(Favorites)} />
-          <Route path="/mesannonces" element={NotRequireAuth(MesAnnonces)} />
+          <Route path="/offre" exact element={requireAuth(Offre)} />
+          <Route path="/addannounce" exact element={requireAuth(AddAnnonce)} />
+          <Route path="/home" exact element={requireAuth(Home)} />
+          <Route path="/mesfavorites" element={requireAuth(Favorites)} />
+          <Route path="/mesannonces" element={requireAuth(MesAnnonces)} />
           <Route path="/success" element={NotRequireAuth(LoginSuccess)} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={requireAuth(Profile)} />
         </Routes>
       </Router>
       {/* <Map
