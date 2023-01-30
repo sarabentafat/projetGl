@@ -74,14 +74,14 @@ function AddAnnonce() {
                 name="annonce"
                 className="          
             text-gray-400
-          w-full
-    cursor-pointer
-      text-gray-700
-      border-b-2 border-gray-100
-      py-2
-      transition
-      ease-in-out
-      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
+            w-full
+            cursor-pointer
+            text-gray-700
+            border-b-2 border-gray-100
+            py-2
+            transition
+            ease-in-out
+            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
                 id=""
               >
                 <option value="">online </option>
