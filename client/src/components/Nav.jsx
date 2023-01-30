@@ -2,11 +2,9 @@ import React from "react";
 import hand from "../assets/hand.png";
 import profilePic from "../assets/profilePic.png";
 import addFile from "../assets/addFile.png";
-import blueCircle from "../assets/blueCircle.png";
 import { Link } from "react-router-dom";
-
+import { AiOutlineSearch } from "react-icons/ai";
 import logo from "../assets/logo.png";
-
 function Nav() {
   return (
     <div className="flex  justify-between mb-5 ">
@@ -17,27 +15,21 @@ function Nav() {
       </div>
       <div className="md:flex w-4 h-4 sm:hidden md:block ">
         <img src={hand} alt="" className="animate-bounce " />
-        <div className="">hi!Ouarda</div>
+        <div className="py-2 ml-1">hi!Ouarda</div>
       </div>
-      <div className="">
+      <div className="flex ">
         <input
-          className=" border-gray-200 border-2 rounded-lg rounded-r-none p-1 lg:w-[400px] sm:w-[100px]"
+          className=" sm:w-[60%] md:w-[80%] border-gray-200 border-2 rounded-lg rounded-r-none p-1 lg:w-[70%] ml-6 "
           type="text"
-          placeholder="search "
+          placeholder="Rechercher  "
         />
-        <button className=" bg-blue-500 text-white p-1 rounded-lg  ml-[-6px] sm:w-[5%px] ">
-          search
-        </button>
+        <div className="bg-blue-500 text-white p-2 px-4 rounded-lg rounded-l-none cursor-pointer "><AiOutlineSearch></AiOutlineSearch></div>
       </div>
-
-      <div className="md:flex bg-blue-500 text-white rounded-lg sm:hidden md:block md:text-sm md:w-[20%] md:h-[40px] ">
-        <img src={addFile} alt="create a new announce " className="p-2" />
-        <h1 className="lg:p-2">
-          <Link to="/addannounce">create new annonce</Link>
-        </h1>
+      <div className="md:flex bg-blue-500 text-white rounded-lg md:px-3 py-1 sm:hidden">
+          <Link to="/addannounce">Ajouter une nouvelle annonce</Link>
       </div>
       <div>
-        <img src={profilePic} alt="" />
+        <Link to='/profile'> <img src={profilePic} alt="profile" /></Link>
       </div>
     </div>
   );

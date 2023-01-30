@@ -7,13 +7,13 @@ import exit from "../assets/exit.png";
 import addFile from "../assets/addFile.png";
 import selectionner from "../assets/select.png";
 import "tw-elements";
-import { Link, Route } from "react-router-dom";
-import Offre from "../pages/Offre";
+import { Link } from "react-router-dom";
+
 
 function LeftSideBar() {
   return (
     <div>
-      <div className="md:w-[20%]  md:text-sm sm:text-xs sm:hidden md:block">
+      <div className="md:w-[20%]  md:text-sm sm:text-xs sm:hidden md:block  ">
         <div className="flex sm:w-[200px] ">
           <img src={home} alt="mes favorites" className="p-1 mr-1" />
           <button>
@@ -39,75 +39,19 @@ function LeftSideBar() {
         </p>
 
         <div class="collapse" id="collapseExample">
-          <div class=" ">
-            <div class="">
               <div class=" p-1">
-                <select
-                  class="
-              sm:w-[100px] 
-                mb-3
-          w-full
-    cursor-pointer
-      text-gray-700
-      border-b-2 border-gray-400 
-      transition
-      ease-in-out
-      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  aria-label="Default select example"
-                >
-                  <option selected>module</option>
-                  <option value="1">math</option>
-                  <option value="2">arab</option>
-                  <option value="3">phisik</option>
-                </select>
-                <select
-                  class="
-                sm:w-[100px] 
-                mb-3
-          w-full
-    cursor-pointer
-      text-gray-700
-      border-b-2 border-gray-400 
-      transition
-      ease-in-out
-      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  aria-label="Default select example"
-                >
-                  <option selected>commune</option>
-                  <option value="1">amizour</option>
-                  <option value="2">akbou</option>
-                  <option value="3">bejaia</option>
-                </select>
-                <select
-                  class="
-                sm:w-[100px] 
-              mb-3
-          w-full
-    cursor-pointer
-      text-gray-700
-      border-b-2 border-gray-400 
-      transition
-      ease-in-out
-      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  aria-label="Default select example"
-                >
-                  <option selected>wilaya</option>
-                  <option value="1">boumerdess</option>
-                  <option value="2">mila</option>
-                  <option value="3">bejaia</option>
-                </select>
-
-                <div className="flex   mb-3  border-b-2 border-gray-400   sm:w-[100px]  ">
+                <input type="text" placeholder="module" className="border-b-2 py-1 " />        
+                <input type="text" placeholder="commune" className="border-b-2 py-1 " />
+                <input type="text" placeholder="wilaya" className="border-b-2 py-1 text-gray-700"  />
+                <div className="flex   mb-3  border-b-2 border-gray-400   sm:w-[177px] my-1  ">
                   <div className="text-gray-700 mr-2">depuis </div>
                   <input type="date" className="" />
                 </div>
-                <div className="flex  mb-3   border-b-2 border-gray-400   sm:w-[100px]  ">
+                <div className="flex   mb-3  border-b-2 border-gray-400   sm:w-[177px] ">
                   <div className="text-gray-700 mr-2">jusqu'a </div>
                   <input type="date" className="" />
                 </div>
               </div>
-            </div>
-          </div>
         </div>
 
         <div className="flex sm:w-[200px] ">
@@ -136,7 +80,7 @@ function LeftSideBar() {
         <div className="sm:flex bg-blue-500 mt-2 text-white rounded-lg sm:block md:hidden sm:w-[100px] ">
           <img src={addFile} alt="create a new announce " className="p-2" />
           <h1 className="sm:text-xs sm:px-1 ">
-            <Link to="/addannounce">cree une annonce </Link>
+            <Link to="/addannounce">créer une annonce </Link>
           </h1>
         </div>
         <div className=" flex bottom-12 absolute ">
@@ -148,6 +92,7 @@ function LeftSideBar() {
         </div>
         {/* <Route path='/offre' component={Offre}></Route> */}
       </div>
+      {/* mobile responsive */}
       <div className="sm:block md:hidden sm:w-[20px]  ">
         <Link to="/home">
           <img src={home} className="my-3 w-5" alt="" />
