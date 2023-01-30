@@ -5,6 +5,7 @@ import ActionsTypes from "../context/ActionsTypes";
 import ENDPOINTS from "../api/endPoints";
 import axios from "../api/Axios";
 import { Context } from "../context/Context.js";
+import suscess from "../assets/s.png";
 
 function LoginSuccess() {
   const navigate = useNavigate();
@@ -32,8 +33,12 @@ function LoginSuccess() {
     }, 3000);
   }, []);
   return (
-    <div>
-      <h1>LoginSuccess</h1>
+    <div className="flex justify-center items-center">
+      <div>
+        {" "}
+        <img src={suscess} alt="sucess" className="w-[60%] h-[60%]" />
+        <h1 className="font-bold text-center text-2xl">LoginSuccess</h1>
+      </div>
     </div>
   );
 }

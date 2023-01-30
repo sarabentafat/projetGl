@@ -66,58 +66,32 @@ function Card({ annonce, inFav, favId }) {
         <div className="flex">
           <div className="mr-4">
             <div>
-              nom :{" "}
-              <span className="text-blue-500">
-                {annonce.personne_annonces.nom}
-              </span>
+              nom : <span className="text-blue-500">Boumansour</span>
             </div>
             <div>
-              prénom :{" "}
-              <span className="text-blue-500">
-                {annonce.personne_annonces.prenom}
-              </span>
+              prénom : <span className="text-blue-500">Ouarda </span>
             </div>
             <div>
               Numéro de téléphone{" "}
-              <span className="text-blue-500">055658985</span>
+              <span className="text-blue-500">01255555</span>
             </div>
             <div>
-              email :{" "}
-              <span className="text-blue-500">
-                {annonce.personne_annonces.email}
-              </span>
+              email : <span className="text-blue-500">ouarda@estin.dz</span>
             </div>
-            {!inFav ? (
-              <button
-                className="border p-1 border-blue-500 text-blue-500 rounded-lg w-full mr-1 mt-2 "
-                onClick={() => {
-                  annonFunc.addToFav(annonce.annonce_id);
-                }}
-              >
-                Ajouter aux favoris
-              </button>
-            ) : (
-              <button
-                className="border p-1 border-blue-500 text-blue-500 rounded-lg w-full mr-1 mt-2 "
-                onClick={() => {
-                  annonFunc.removeFromFav(favId);
-                }}
-              >
-                supprimer de favoris
-              </button>
-            )}
+            <div>
+              adresse : <span className="text-blue-500">Bejaia</span>
+            </div>
+            <button className="border p-1 border-blue-500 text-blue-500 rounded-lg w-full mr-1 mt-5 ">
+              Ajouter aux favoris
+            </button>
           </div>
-          <div className=" ml-16 w-full mt-[-15px]">
+          <div className=" ml-16 w-full mt-[-30px]">
             <input
               type="text"
               placeholder="écrire un commantaire"
               className="border-2 w-[90%] mt-2 py-5 rounded-lg p-4 mx-3 h-[80%]"
-              ref={commentRef}
             />
-            <button
-              className="  border p-1 bg-blue-500 text-white rounded-lg w-[90%] mr-1 mt-2 ml-2"
-              onClick={handleComment}
-            >
+            <button className="  border p-1 bg-blue-500 text-white rounded-lg w-[90%] mr-1 mt-2 ml-2">
               demander une offre
             </button>
           </div>
