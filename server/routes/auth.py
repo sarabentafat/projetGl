@@ -114,10 +114,9 @@ def google_callback() :
         prenom = user_info['given_name']
         email = user_info['email']
         tel ='0565856897'  #random val
-        adresse= 154 #random val
         isadmin= False
     
-        new_user = Personnes(id=id,  nom=nom,prenom=prenom, email=email,tel=tel,adresse=adresse,isadmin=isadmin)
+        new_user = Personnes(id=id,  nom=nom,prenom=prenom, email=email,tel=tel,isadmin=isadmin)
         db.session.add(new_user)
         db.session.commit()
 
