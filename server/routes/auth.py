@@ -131,4 +131,3 @@ def google_callback() :
         access_token = create_access_token(identity=new_user.id) #* will get infos from googleid
         set_access_cookies(response, access_token)
         return response
-

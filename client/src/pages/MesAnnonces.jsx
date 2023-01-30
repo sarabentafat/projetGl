@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Card from "../components/Card";
+import MyCard from "../components/MyCard";
 import LeftSideBar from "../components/LeftSideBar";
 import Nav from "../components/Nav";
 import axios from "../api/Axios";
@@ -25,9 +25,10 @@ function MesAnnonces() {
         <LeftSideBar />
         {/* todo :   create cards component wich contain list of card(annonce)  */}
         {myAnnonces ? (
-          <Card annonces={myAnnonces} />
+          <MyCard annonces={myAnnonces} />
+        
         ) : (
-          <h2>There is no annonces to display</h2>
+          <h2>Il n'y a pas d'annonces à afficher</h2>
         )}
       </div>
     </div>

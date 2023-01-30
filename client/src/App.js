@@ -8,13 +8,10 @@ import Favorites from "./pages/Favorites";
 import MesAnnonces from "./pages/MesAnnonces";
 import { Context } from "./context/Context";
 import LoginSuccess from "./pages/LoginSuccess";
-<<<<<<< HEAD
-// import Map from "./pages/Map";
-=======
 import Map from "./pages/Map";
 import { Navigate } from "react-router-dom";
 import Nav from "./components/Nav";
->>>>>>> eef53bd243932e01621f69add7273aa44759183e
+import Profile from "./pages/Profile";
 
 function App() {
   const { user } = useContext(Context);
@@ -47,6 +44,7 @@ function App() {
           <Route path="/mesfavorites" element={requireAuth(Favorites)} />
           <Route path="/mesannonces" element={requireAuth(MesAnnonces)} />
           <Route path="/success" element={NotRequireAuth(LoginSuccess)} />
+          <Route path="/profile" element={<Profile/>}/> 
         </Routes>
       </Router>
       {/* <Map

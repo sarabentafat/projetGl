@@ -31,7 +31,7 @@ function Favorites() {
           {myFavorites ? (
             <Card annonces={myFavorites} />
           ) : (
-            <h2>There is no annonces to display</h2>
+            <h2>Il n'y a pas d'annonces à afficher</h2>
           )}
         </div>
       </div>
