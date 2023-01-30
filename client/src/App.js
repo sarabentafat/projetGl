@@ -8,33 +8,45 @@ import Favorites from "./pages/Favorites";
 import MesAnnonces from "./pages/MesAnnonces";
 import { Context } from "./context/Context";
 import LoginSuccess from "./pages/LoginSuccess";
+<<<<<<< HEAD
 // import Map from "./pages/Map";
+=======
+import Map from "./pages/Map";
+import { Navigate } from "react-router-dom";
+import Nav from "./components/Nav";
+>>>>>>> eef53bd243932e01621f69add7273aa44759183e
 
 function App() {
   const { user } = useContext(Context);
   console.log(user);
 
+  const requireAuth = (Element) => {
+    if (user) {
+      return <Element />;
+    } else {
+      return <Navigate to="/" />;
+    }
+  };
+
+  const NotRequireAuth = (Element) => {
+    if (!user) {
+      return <Element />;
+    } else {
+      return <Navigate to="/home" />;
+    }
+  };
+
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" exact element={user ? <Home /> : <Landing />} />
-          <Route path="/offre" exact element={user ? <Offre /> : <Landing />} />
-          <Route
-            path="/addannounce"
-            exact
-            element={user ? <AddAnnonce /> : <Landing />}
-          />
-          <Route path="/home" exact element={user ? <Home /> : <Landing />} />
-          <Route
-            path="/mesfavorites"
-            element={user ? <Favorites /> : <Landing />}
-          />
-          <Route
-            path="/mesannonces"
-            element={user ? <MesAnnonces /> : <Landing />}
-          />
-          <Route path="/success" element={user ? <Home /> : <LoginSuccess />} />
+          <Route path="/" exact element={NotRequireAuth(Landing)} />
+          <Route path="/offre" exact element={requireAuth(Offre)} />
+          <Route path="/addannounce" exact element={requireAuth(AddAnnonce)} />
+          <Route path="/home" exact element={requireAuth(Home)} />
+          <Route path="/mesfavorites" element={requireAuth(Favorites)} />
+          <Route path="/mesannonces" element={requireAuth(MesAnnonces)} />
+          <Route path="/success" element={NotRequireAuth(LoginSuccess)} />
         </Routes>
       </Router>
       {/* <Map

@@ -74,6 +74,7 @@ function AddAnnonce() {
             <label className="text-gray-500 text-[14px] focus:outline-none  ">
               <select
                 name="annonce"
+<<<<<<< HEAD
                 className="     
                 mb-4     
             text-gray-700
@@ -85,6 +86,19 @@ function AddAnnonce() {
       ease-in-out
       focus:text-gray-800 focus:bg-white focus:border-blue-600 focus:outline-none "
                 id="modalité"
+=======
+                className="          
+            text-gray-400
+            w-full
+            cursor-pointer
+            text-gray-700
+            border-b-2 border-gray-100
+            py-2
+            transition
+            ease-in-out
+            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
+                id=""
+>>>>>>> eef53bd243932e01621f69add7273aa44759183e
               >
                 <option value="online">en ligne </option>
                 <option value="offline">hors ligne </option>
